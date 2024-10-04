@@ -20,6 +20,7 @@ const Shop = () => {
         );
         if (response.status === 200) {
           setProducts(response.data.products);
+          console.log(response.data);
           setLoading(false);
         } else {
           setError("Failed to fetch products");
@@ -60,6 +61,7 @@ const Shop = () => {
     );
     if (response.status === 200) {
       setSuccess("Product added to cart");
+      
     } else {
       setSuccess("Error Adding Item To Cart");
     }
