@@ -6,9 +6,9 @@ import Cookies from 'js-cookie';
 
 const Signup = ({ error }) => {
 
-  useEffect(()=>{
-    Cookies.remove('token');
-  },[])
+  // useEffect(()=>{
+  //   Cookies.remove('token');
+  // },[])
   
 
   const nameRef = useRef();

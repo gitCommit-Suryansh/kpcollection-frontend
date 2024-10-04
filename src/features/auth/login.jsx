@@ -11,9 +11,9 @@ import Cookies from 'js-cookie';
 
 const Login = () => {
   const [sucess, setsucess] = useState("")
-  useEffect(()=>{
-    Cookies.remove('token');
-  },[])
+  // useEffect(()=>{
+  //   Cookies.remove('token');
+  // },[])
   
    
    let navigate=useNavigate()
