@@ -9,7 +9,7 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null)
+  const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -34,28 +34,36 @@ const Shop = () => {
 
     fetchProducts();
   }, []);
-  console.log(products)
+  console.log(products);
 
-  const token=Cookies.get('token')
-  console.log(token)
-  console.log(token); // Check if it's undefined or a valid token
-if (token) {
-  const decodedToken = decodeToken(token);
-  var userId = decodedToken.id;
-  console.log(userId);
-} else {
-  console.log("No token found");
-}
-
-  const addToCart=async(id)=>{
-    const response=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/cart/addtocart/${id}`,{userId})
-    if(response.status===200){
-      setSuccess("Product added to cart")
+  const token = document.cookie
+    .split("; ")
+    .find((row) => row.startsWith("token="))
+    ?.split("=")[1];
+  console.log(token);
+  if (token) {
+    try {
+      const decodedToken = decodeToken(token);
+      var userId = decodedToken.id;
+      console.log(userId);
+    } catch (error) {
+      console.error("Failed to decode token:", error);
     }
-    else{
-      setSuccess("Error Adding Item To Cart")
-    }
+  } else {
+    console.log("No token found");
   }
+
+  const addToCart = async (id) => {
+    const response = await axios.post(
+      `${process.env.REACT_APP_BACKEND_URL}/cart/addtocart/${id}`,
+      { userId }
+    );
+    if (response.status === 200) {
+      setSuccess("Product added to cart");
+    } else {
+      setSuccess("Error Adding Item To Cart");
+    }
+  };
 
   if (loading) return <p>Loading...</p>;
   if (error) return <p>Error: {error}</p>;
@@ -96,7 +104,6 @@ if (token) {
       </style>
 
       <div className="main-div w-full h-screen flex items-start px-20 py-20">
-        
         <div className="side-nav w-[25%] flex h-screen flex-col items-start">
           <div className="flex items-center gap-2">
             <h3>Sort by</h3>
@@ -139,7 +146,6 @@ if (token) {
               <div
                 key={index}
                 className="cards w-60 rounded-md overflow-hidden "
-                
               >
                 <div
                   className="card-img w-full h-52 flex items-center relative"
@@ -175,7 +181,7 @@ if (token) {
                   </Link>
                   <a
                     className="w-7 h-7 flex items-center justify-center rounded-full bg-white text-black mt-8"
-                    onClick={()=>addToCart(product._id)}
+                    onClick={() => addToCart(product._id)}
                   >
                     <i className="ri-add-line"></i>
                   </a>
