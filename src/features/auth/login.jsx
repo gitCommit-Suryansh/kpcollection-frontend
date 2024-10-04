@@ -32,6 +32,7 @@ const Login = () => {
         })
         if(response.status===200){
           setsucess("logged in sucessfully")
+          console.log(response.data);
 
           navigate('/Shop')
           

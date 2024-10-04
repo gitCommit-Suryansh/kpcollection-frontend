@@ -20,7 +20,7 @@ const Shop = () => {
         );
         if (response.status === 200) {
           setProducts(response.data.products);
-          console.log(response.data);
+          
           setLoading(false);
         } else {
           setError("Failed to fetch products");
@@ -35,7 +35,6 @@ const Shop = () => {
 
     fetchProducts();
   }, []);
-  console.log(products);
 
   const token = document.cookie
     .split("; ")
