@@ -49,6 +49,7 @@ const ProductDetails = () => {
       setmessage("Error Adding Item To Cart")
     }
   }
+  console.log(ProductDets)
 
   return (
    <>
@@ -93,7 +94,7 @@ const ProductDetails = () => {
       </div>
       <div className="w-1/2 pl-4">
         <div className="text-sm text-blue-600 mb-2">
-          Visit the {ProductDets.owner.businessname} Store
+          {/* Visit the {ProductDets.owner.businessname} Store */}
         </div>
         <h1 className="text-2xl font-bold mb-2">{ProductDets.name}</h1>
         <div className="flex items-center mb-2">
@@ -168,7 +169,7 @@ const ProductDetails = () => {
           Ships from <span className="text-blue-600">Amazon</span>
         </div>
         <div className="text-sm text-gray-600 mb-2">
-          Sold by <span className="text-blue-600">{ProductDets.owner.businessname}</span>
+          {/* Sold by <span className="text-blue-600">{ProductDets.owner.businessname}</span> */}
         </div>
         <div className="text-sm text-gray-600 mb-2">
           Packaging{" "}

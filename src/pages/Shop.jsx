@@ -36,16 +36,12 @@ const Shop = () => {
     fetchProducts();
   }, []);
 
-  const token = document.cookie
-    .split("; ")
-    .find((row) => row.startsWith("token="))
-    ?.split("=")[1];
+  const token = Cookies.get("token");
   console.log(token);
   if (token) {
     try {
       const decodedToken = decodeToken(token);
       var userId = decodedToken.id;
-      console.log(userId);
     } catch (error) {
       console.error("Failed to decode token:", error);
     }
