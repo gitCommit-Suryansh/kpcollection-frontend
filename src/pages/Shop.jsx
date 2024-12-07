@@ -47,7 +47,7 @@ const Shop = () => {
   if (token) {
     try {
       const decodedToken = decodeToken(token);
-      var userId = decodedToken.id;
+      var userId = decodedToken.id
     } catch (error) {
       console.error("Failed to decode token:", error);
     }
