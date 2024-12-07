@@ -16,11 +16,14 @@ const Shop = () => {
     const fetchProducts = async () => {
       try {
         const response = await axios.get(
-          `${process.env.REACT_APP_BACKEND_URL}/products/allproducts`
+          `${process.env.REACT_APP_BACKEND_URL}/products/allproducts`,
+          {
+            withCredentials: true, // Include credentials (cookies)
+          }
         );
+  
         if (response.status === 200) {
           setProducts(response.data.products);
-          
           setLoading(false);
         } else {
           setError("Failed to fetch products");
@@ -32,9 +35,10 @@ const Shop = () => {
         setLoading(false);
       }
     };
-
+  
     fetchProducts();
   }, []);
+  ;
 
   const token = Cookies.get("token");
   console.log(token);
