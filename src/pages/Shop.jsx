@@ -38,23 +38,22 @@ const Shop = () => {
   
     fetchProducts();
   }, []);
-  
+  ;
 
   const token = Cookies.get("token");
-  console.log("Token from Cookies:", token);
-  
+  console.log(token);
+  console.log(document.cookie);
+
   if (token) {
     try {
-      const decodedToken = decodeToken(token); // Replace with your decoding logic
-      console.log("Decoded Token:", decodedToken);
-      const userId = decodedToken.id;
+      const decodedToken = decodeToken(token);
+      var userId = decodedToken.id;
     } catch (error) {
       console.error("Failed to decode token:", error);
     }
   } else {
     console.log("No token found");
   }
-  
 
   const addToCart = async (id) => {
     const response = await axios.post(
