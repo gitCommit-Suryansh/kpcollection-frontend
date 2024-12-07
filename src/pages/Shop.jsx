@@ -38,7 +38,7 @@ const Shop = () => {
   
     fetchProducts();
   }, []);
-  ;
+  
 
   const token = Cookies.get("token");
   console.log("Token from Cookies:", token);
