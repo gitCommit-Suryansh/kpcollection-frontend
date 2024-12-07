@@ -26,24 +26,34 @@ const Login = () => {
         email:emailRef.current.value,
         password:passwordRef.current.value
     }
-    try{
-        let response=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`,formdata,{
-          withCredentials: true,
-        })
-        if(response.status===200){
-          setsucess("logged in sucessfully")
-          console.log(response.data);
-
-          navigate('/Shop')
-          
-        }
-        else{
-          setsucess("incorrect creadentials")
-        }
-      
-    }catch(err){
-        console.log(err)
+    try {
+      let response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/auth/login`, formdata, {
+        withCredentials: true, // Important to allow cookies to be sent
+      });
+    
+      if (response.status === 200) {
+        // You can set the token here manually if you need to store it in a cookie
+        const { token } = response.data.token;
+    
+        // Set token in a cookie
+        document.cookie = `token=${token}; path=/; max-age=36000; secure; samesite=None`;
+    
+        // Optionally, you can store the token in localStorage as well
+        // localStorage.setItem('token', token);
+    
+        setsucess("Logged in successfully");
+        console.log("Token stored in cookie:", token);
+    
+        // Redirect to the shop page
+        navigate('/Shop');
+        
+      } else {
+        setsucess("Incorrect credentials");
+      }
+    } catch (err) {
+      console.log("Login error:", err);
     }
+    
    }
   return (
     <>
