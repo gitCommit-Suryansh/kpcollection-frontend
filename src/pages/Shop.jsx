@@ -42,6 +42,8 @@ const Shop = () => {
 
   const token = Cookies.get("token");
   console.log(token);
+  console.log(document.cookie);
+
   if (token) {
     try {
       const decodedToken = decodeToken(token);
