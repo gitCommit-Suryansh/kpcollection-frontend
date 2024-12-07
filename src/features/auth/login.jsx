@@ -33,14 +33,10 @@ const Login = () => {
     
       if (response.status === 200) {
         // You can set the token here manually if you need to store it in a cookie
-        const { token } = response.data.token;
+        const { token } = response.data;
     
         // Set token in a cookie
         document.cookie = `token=${token}; path=/; max-age=36000; secure; samesite=None`;
-    
-        // Optionally, you can store the token in localStorage as well
-        // localStorage.setItem('token', token);
-    
         setsucess("Logged in successfully");
         console.log("Token stored in cookie:", token);
     
