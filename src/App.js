@@ -17,7 +17,11 @@ import MyAccount from './pages/MyAccount';
 import MyOrders from './features/MyAccountPages/MyOrders';
 import MyProfile from './features/MyAccountPages/MyProfile';
 import OrderDetails from './features/MyAccountPages/OrderDetails';
+import { Buffer } from 'buffer';
+
+
 function App() {
+  window.Buffer = Buffer;
   return (
     <>
     
@@ -25,8 +29,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Signup/>}/>
         <Route path='/login' element={<Login/>}/>
-        <Route path='/Shop' element={<Shop/>}/>
-        {/* <Route path='/Shop' element={<ProtectedRoute element={<Shop/>} />} /> */}
+        <Route path='/Shop' element={<ProtectedRoute element={<Shop/>} />}/>
         <Route path='/cart' element={<ProtectedRoute element={<Cart/>} />} />
         <Route path='/myaccount' element={<ProtectedRoute element={<MyAccount/>} />} />
         <Route path='/myaccount/myorders' element={<ProtectedRoute element={<MyOrders/>} />} />

@@ -5,9 +5,9 @@ import Cookies from 'js-cookie';
 
 
 const OwnerLogin = () => {
-  useEffect(() => {
-    Cookies.remove("token");
-  }, []);
+  // useEffect(() => {
+  //   Cookies.remove("token");
+  // }, []);
 
   let navigate = useNavigate();
   const emailRef = useRef();
@@ -28,8 +28,9 @@ const OwnerLogin = () => {
           withCredentials: true,
         }
       );
-      console.log(response)
       if (response.status === 200) {
+        const { token } = response.data;
+        document.cookie = `token=${token}; path=/; max-age=36000; secure; samesite=None`;
         setMessage("Logged in Succesfully")
         navigate("/createproduct");
       }

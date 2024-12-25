@@ -4,16 +4,14 @@ import axios from 'axios'
 import { Link } from 'react-router-dom';
 import { useNavigate } from 'react-router-dom'; // For navigation
 import Cookies from 'js-cookie';
-// import dotenv from 'dotenv';
-// dotenv.config();
 
 
 
 const Login = () => {
   const [sucess, setsucess] = useState("")
-  // useEffect(()=>{
-  //   Cookies.remove('token');
-  // },[])
+  useEffect(()=>{
+    Cookies.remove('token');
+  },[])
   
    
    let navigate=useNavigate()
@@ -38,9 +36,6 @@ const Login = () => {
         // Set token in a cookie
         document.cookie = `token=${token}; path=/; max-age=36000; secure; samesite=None`;
         setsucess("Logged in successfully");
-        console.log("Token stored in cookie:", token);
-    
-        // Redirect to the shop page
         navigate('/Shop');
         
       } else {
@@ -79,48 +74,51 @@ const Login = () => {
           }
         `}
       </style>
-      {sucess && sucess.length > 0 && (
+      {sucess && (
         <div
-          className={`absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md ${
-            sucess === "logged in sucesfully" ? "bg-blue-500" : "bg-red-500"
-          }`}
+          className={`fixed top-5 left-1/2 transform -translate-x-1/2 p-3 z-50 
+          ${sucess === "Logged in successfully" ? "bg-green-500" : "bg-red-500"}
+          text-white rounded-lg shadow-lg`}
         >
-          <span className="inline-block mt-1 mb-1 text-white">{sucess}</span>
+          <span className="inline-block mt-1 mb-1">{sucess}</span>
         </div>
       )}
 
-     <div className="main-div2 w-1/2 flex items-center justify-center h-screen">
-          <div className="w-full px-32">
-            <h4 className="text-2xl capitalize mb-5">login your account</h4>
-            <form autoComplete="off" onSubmit={handlesubmit}>
-              <input
-                className="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="email"
-                placeholder="Email"
-                name="email"
-                ref={emailRef}
-              />
-              <input
-                className="block bg-zinc-100 w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="password"
-                placeholder="Password"
-                name="password"
-                ref={passwordRef}
-              />
-              <button
-                className="px-5 block rounded-full py-2 mt-2 bg-blue-500 text-white"
-                type="submit"
-              >Login</button>
-            </form>
-            <div className="mt-5">
-              <Link to="/">
-                <button className="px-5 rounded-full py-2 mt-2 bg-gray-500 text-white">
-                  Create New Account
-                </button>
-              </Link>
-            </div>
+      <div className="main-div2 w-full max-w-md mx-auto flex items-center justify-center h-screen">
+        <div className="w-full px-8 py-6 bg-white shadow-md rounded-lg">
+          <h4 className="text-2xl font-semibold text-center mb-6">Login to Your Account</h4>
+          <form autoComplete="off" onSubmit={handlesubmit}>
+            <input
+              className="block bg-gray-100 w-full px-4 py-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              type="email"
+              placeholder="Email"
+              name="email"
+              ref={emailRef}
+            />
+            <input
+              className="block bg-gray-100 w-full px-4 py-3 border border-gray-300 rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-black"
+              type="password"
+              placeholder="Password"
+              name="password"
+              ref={passwordRef}
+            />
+            <button
+              className="w-full py-3 mt-4 bg-black text-white rounded-3xl hover:bg-gray-800 transition duration-300"
+              type="submit"
+            >
+              Login
+            </button>
+          </form>
+          <div className="mt-5 text-center">
+            <Link to="/">
+              <button className="px-5 rounded-full py-2 mt-2 bg-gray-500 text-white hover:bg-gray-600 transition duration-300">
+                Create New Account
+              </button>
+            </Link>
           </div>
-        </div></>
+        </div>
+      </div>
+    </>
   )
 }
 

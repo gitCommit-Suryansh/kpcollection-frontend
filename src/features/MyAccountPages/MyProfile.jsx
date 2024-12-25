@@ -125,7 +125,7 @@ const MyProfile = () => {
                       imagePreview
                         ? imagePreview
                         : profile
-                        ? `data:image/png;base64,${btoa(new Uint8Array(profile.data).reduce((data, byte) => data + String.fromCharCode(byte),""))}`
+                        ? `data:image/jpg;base64,${Buffer.from(profile.data).toString("base64")}`
                         : defaultProfile
                     })`,
                     backgroundSize: "cover",  

@@ -1,9 +1,12 @@
 import React, { useEffect, useState } from "react";
 import Header from "../features/navigation/header";
 import axios from "axios";
+import { Buffer } from "buffer";
 import { Link, useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import decodeToken from "../utils/decodeToken";
+import carousel1 from "../assets/images/carousel1.png";
+import carousel2 from "../assets/images/carousel2.png";
 
 const Shop = () => {
   const [products, setProducts] = useState([]);
@@ -11,6 +14,9 @@ const Shop = () => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
   const navigate = useNavigate();
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [fetchedProducts, setFetchedProducts] = useState([]);
+  const images = [carousel1, carousel2];
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -18,10 +24,10 @@ const Shop = () => {
         const response = await axios.get(
           `${process.env.REACT_APP_BACKEND_URL}/products/allproducts`,
           {
-            withCredentials: true, // Include credentials (cookies)
+            withCredentials: true,
           }
         );
-  
+
         if (response.status === 200) {
           setProducts(response.data.products);
           setLoading(false);
@@ -30,171 +36,190 @@ const Shop = () => {
           setLoading(false);
         }
       } catch (err) {
-        console.error(err); // Log the error for debugging
+        console.error(err);
         setError("Failed to fetch products");
         setLoading(false);
       }
     };
-  
+
     fetchProducts();
   }, []);
-  ;
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentImageIndex((prevIndex) => (prevIndex + 1) % images.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [images.length]);
+
+  useEffect(() => {
+    fetchProductsByCategory("Shirt");
+  }, []);
+
+  const fetchProductsByCategory = async (category) => {
+    try {
+      const response = await axios.get(
+        `${process.env.REACT_APP_BACKEND_URL}/products/fetchproduct/${category}`
+      );
+      setFetchedProducts(response.data.products);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setError("Failed to fetch products. Please try again.");
+    }
+  };
 
   const token = Cookies.get("token");
-  console.log(token);
-  console.log(document.cookie);
+  let userId;
 
   if (token) {
     try {
       const decodedToken = decodeToken(token);
-      var userId = decodedToken.id
+      userId = decodedToken.id;
     } catch (error) {
       console.error("Failed to decode token:", error);
     }
-  } else {
-    console.log("No token found");
   }
 
-  const addToCart = async (id) => {
-    const response = await axios.post(
-      `${process.env.REACT_APP_BACKEND_URL}/cart/addtocart/${id}`,
-      { userId }
+  if (loading)
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center">
+        <div className="animate-pulse text-gray-800">Loading...</div>
+      </div>
     );
-    if (response.status === 200) {
-      setSuccess("Product added to cart");
-      
-    } else {
-      setSuccess("Error Adding Item To Cart");
-    }
-  };
 
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error: {error}</p>;
+  if (error)
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center text-red-600">
+        Error: {error}
+      </div>
+    );
 
   return (
-    <>
+    <div className="min-h-screen bg-white">
       <Header />
-      {success && success.length > 0 && (
-        <div className="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-blue-500">
-          <span className="inline-block mt-1 mb-1 text-white">{success}</span>
+
+      {/* Carousel Component */}
+      <div className="relative w-full h-64 sm:h-screen overflow-hidden">
+        <img
+          src={images[currentImageIndex]}
+          alt="Carousel"
+          className="absolute inset-0 w-full h-full object-cover transition-opacity duration-1000"
+        />
+      </div>
+
+      {/* Category Buttons */}
+
+      {/* Success Notification */}
+      {success && (
+        <div className="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded-md shadow-lg z-50">
+          {success}
         </div>
       )}
+      <div className="text-center mt-4">
+        <button className="px-4 py-2 text-white bg-black rounded-3xl">
+          NEW DROPS
+        </button>
+      </div>
 
-      <style>
-        {`
-          @media (max-width: 1024px) {
-            .side-nav {
-              display: none;
-            }
-            .product-main-div {
-              width: auto;
-            }
-            .cards {
-              width: 48vw;
-            }
-            .card-img {
-              height: 23vh;
-            }
-            .main-div {
-              padding: 10vh 1.5px 5px 1.5px;
-              margin-bottom: 5px;
-            }
-            .panel {
-              height: 10vh;
-            }
-          }
-        `}
-      </style>
-
-      <div className="main-div w-full h-screen flex items-start px-20 py-20">
-        <div className="side-nav w-[25%] flex h-screen flex-col items-start">
-          <div className="flex items-center gap-2">
-            <h3>Sort by</h3>
-            <form action="/shop">
-              <select className="border-[1px] px-2 py-1" name="sortby">
-                <option value="popular">Popular</option>
-                <option value="newest">Newest</option>
-              </select>
-            </form>
-          </div>
-
-          <div className="flex flex-col mt-20">
-            <a className="block w-fit mb-2" href="">
-              New Collection
-            </a>
-            <a className="block w-fit mb-2" href="">
-              All Products
-            </a>
-            <a className="block w-fit mb-2" href="">
-              Discounted Products
-            </a>
-          </div>
-
-          <div className="mt-32">
-            <a className="block w-fit mb-2" href="">
-              Filter by :
-            </a>
-            <a className="block w-fit mb-2" href="">
-              Availability
-            </a>
-            <a className="block w-fit mb-2" href="">
-              Discount
-            </a>
-          </div>
-        </div>
-
-        <div className="product-main-div w-[75%] flex flex-col gap-5 h-screen ">
-          <div className="flex flex-wrap gap-3 ">
-            {products.map((product, index) => (
-              <div
-                key={index}
-                className="cards w-60 rounded-md overflow-hidden "
-              >
-                <div
-                  className="card-img w-full h-52 flex items-center relative"
-                  style={{ backgroundColor: product.bgcolor }}
-                >
-                  <Link to={`/product/${product._id}`}>
-                    <img
-                      className="h-[12rem] w-full object-fit"
-                      src={`data:image/png;base64,${btoa(
-                        String.fromCharCode.apply(
-                          null,
-                          new Uint8Array(product.images[0].data)
-                        )
-                      )}`}
-                      alt={product.name}
-                    />
-                  </Link>
+      {/* Main Content */}
+      <main className="max-w-[1440px] mx-auto px-4 mt-2">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+          {products.map((product, index) => (
+            <div
+              key={product._id}
+              className={`group z-2 ${
+                window.innerWidth > 1024 ? "scale-[90%]" : ""
+              }`}
+            >
+              <Link to={`/product/${product._id}`} className="block relative ">
+                <div className="aspect-[3/4] overflow-hidden bg-gray-100 ">
+                  <img
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    src={`data:image/jpg;base64,${Buffer.from(
+                      product.images[0].data
+                    ).toString("base64")}`}
+                    alt={product.name}
+                  />
                 </div>
-                <div
-                  className="panel flex justify-between h-[13vh] pr-3"
-                  style={{
-                    backgroundColor: product.panelcolor,
-                    color: product.textcolor,
-                  }}
-                >
-                  <Link to={`/product/${product._id}`}>
-                    <div className="font-semibold px-3 py-4 overflow-hidden">
-                      <h3 className="w-[12vw] h-[7vh] overflow-hidden">
-                        {product.name}
-                      </h3>
-                      <h4>₹ {product.price}</h4>
-                    </div>
-                  </Link>
-                  <a
-                    className="w-7 h-7 flex items-center justify-center rounded-full bg-white text-black mt-8"
-                    onClick={() => addToCart(product._id)}
-                  >
-                    <i className="ri-add-line"></i>
-                  </a>
+              </Link>
+              <div className="mt-4 text-center">
+                <Link to={`/product/${product._id}`}>
+                  <h3 className="text-sm font-medium text-gray-900 mb-1">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-gray-900">INR {product.price}</p>
+                </Link>
+                <div className="mt-2 flex justify-center space-x-2 border-t-2 border-b-2 border-gray-300">
+                  {product.sizes.map((size) => (
+                    <span key={size} className="text-xs text-gray-600">
+                      {size}
+                    </span>
+                  ))}
                 </div>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="text-center mt-12">
+          <button className="border border-black px-8 py-2 text-sm hover:bg-black hover:text-white transition-colors duration-300">
+            VIEW ALL
+          </button>
+        </div>
+      </main>
+
+      <div className="flex justify-center mt-8">
+        {["Shirt", "Jeans", "T-Shirts", "Lower"].map((category) => (
+          <button
+            key={category}
+            onClick={() => fetchProductsByCategory(category)}
+            className="mx-2 px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {/* Display Fetched Products */}
+      <div className="max-w-[1440px] mx-auto px-4">
+        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+          {fetchedProducts.map((product, index) => (
+            <div
+              key={index}
+              className={`group z-2 ${window.innerWidth > 1024 ? "scale-[90%]" : ""}`}
+            >
+              <Link to={`/product/${product._id}`} className="block relative">
+                <div className="aspect-[3/4] overflow-hidden bg-gray-100">
+                  <img
+                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                    src={`data:image/jpg;base64,${Buffer.from(
+                      product.images[0].data
+                    ).toString("base64")}`}
+                    alt={product.name}
+                  />
+                </div>
+              </Link>
+              <div className="text-center mt-2">
+                <Link to={`/product/${product._id}`}>
+                  <h3 className="text-sm font-medium text-gray-900 mb-1">
+                    {product.name}
+                  </h3>
+                  <p className="text-sm text-gray-900">INR {product.price}</p>
+                </Link>
+                <div className="mt-2 flex justify-center space-x-2 border-t-2 border-b-2 border-gray-300 pt-2 pb-2">
+                  {product.sizes.map((size) => (
+                    <span key={size} className="text-xs text-gray-600">
+                      {size}
+                    </span>
+                  ))}
+                </div>
+              </div>
+            </div>
+          ))}
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

@@ -51,13 +51,7 @@ const OrderDetails = () => {
                  <div className="w-full h-full flex justify-center align-center">
                    {product.productId.images && product.productId.images.length > 0 && (
                      <img
-                       className="w-full h-full object-fit"
-                       src={`data:image/jpeg;base64,${btoa(
-                         String.fromCharCode.apply(
-                           null,
-                           new Uint8Array(product.productId.images[0].data)
-                         )
-                       )}`}
+                       className="w-full h-full object-fit" src={`data:image/jpg;base64,${Buffer.from(product.productId.images[0].data).toString("base64")}`}
                        alt=""
                      />
                    )}
