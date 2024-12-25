@@ -36,8 +36,6 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id]);
 
-
-
   const addToWishlist = () => {
     // Implement wishlist functionality
   };
@@ -67,15 +65,12 @@ const ProductDetails = () => {
     return str.toUpperCase();
   };
 
-  
-  
   if (!productDets)
     return (
       <div className="min-h-screen bg-white flex items-center justify-center">
         <div className="animate-pulse text-gray-800">Loading...</div>
       </div>
     );
-
 
   return (
     <>
@@ -84,36 +79,34 @@ const ProductDetails = () => {
         {message && (
           <div
             className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-3 z-50 
-          ${
-            message === "Product added to cart" ? "bg-green-500" : "bg-red-500"
-          } 
+          ${message === "Product added to cart" ? "bg-green-500" : "bg-red-500"} 
           text-white rounded-lg shadow-lg`}
           >
             {message}
           </div>
         )}
 
-        <div className="grid grid-cols-12 gap-8">
+        <div className={`grid ${window.innerWidth > 1024 ? "grid-cols-12" : "grid-cols-1"} gap-8`}>
           {/* Left Sidebar - Thumbnail Images */}
-          <div className="col-span-1">
-            <div className="space-y-2">
-              {productDets.images.map((image, index) => (
-                <img
-                  key={index}
-                  src={`data:image/jpg;base64,${Buffer.from(image.data).toString('base64')}`}
-                  alt={`Thumbnail ${index + 1}`}
-                  className={`w-full aspect-square object-cover cursor-pointer border
-                ${
-                  selectedImage === index ? "border-black" : "border-gray-200"
-                }`}
-                  onClick={() => setSelectedImage(index)}
-                />
-              ))}
+          {window.innerWidth > 1024 ? (
+            <div className="col-span-1">
+              <div className="space-y-2">
+                {productDets.images.map((image, index) => (
+                  <img
+                    key={index}
+                    src={`data:image/jpg;base64,${Buffer.from(image.data).toString('base64')}`}
+                    alt={`Thumbnail ${index + 1}`}
+                    className={`w-full aspect-square object-cover cursor-pointer border
+                ${selectedImage === index ? "border-black" : "border-gray-200"}`}
+                    onClick={() => setSelectedImage(index)}
+                  />
+                ))}
+              </div>
             </div>
-          </div>
+          ) : null}
 
           {/* Main Image */}
-          <div className="col-span-6">
+          <div className={`col-span-1 ${window.innerWidth > 1024 ? "md:col-span-6" : ""}`}>
             <img
               src={`data:image/jpg;base64,${Buffer.from(productDets.images[selectedImage].data).toString('base64')}`}
               alt="Main Product"
@@ -124,8 +117,24 @@ const ProductDetails = () => {
             </button>
           </div>
 
+          {/* Thumbnail Images for Mobile View */}
+          {window.innerWidth <= 1024 && (
+            <div className="flex overflow-x-auto space-x-2 mb-4">
+              {productDets.images.map((image, index) => (
+                <img
+                  key={index}
+                  src={`data:image/jpg;base64,${Buffer.from(image.data).toString('base64')}`}
+                  alt={`Thumbnail ${index + 1}`}
+                  className={`w-16 h-16 aspect-square object-cover cursor-pointer border
+                ${selectedImage === index ? "border-black" : "border-gray-200"}`}
+                  onClick={() => setSelectedImage(index)}
+                />
+              ))}
+            </div>
+          )}
+
           {/* Product Details */}
-          <div className="col-span-5">
+          <div className={`col-span-1 ${window.innerWidth > 1024 ? "md:col-span-5" : ""}`}>
             <h1 className="text-xl font-medium mb-4">
               {capitalizeWords(productDets.name)}
             </h1>

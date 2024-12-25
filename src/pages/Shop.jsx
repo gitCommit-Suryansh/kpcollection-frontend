@@ -169,7 +169,7 @@ const Shop = () => {
         </div>
       </main>
 
-      <div className="flex justify-center mt-8">
+      <div className="flex justify-center mt-8 mb-8">
         {["Shirt", "Jeans", "T-Shirts", "Lower"].map((category) => (
           <button
             key={category}
