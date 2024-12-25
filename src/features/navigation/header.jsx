@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import logo from '../../assets/images/scatch.png'
+import logo from '../../assets/images/favicon.png'
 import IsLoggedIn from '../../utils/IsLoggedIn';
 import { Link } from 'react-router-dom';
 import { ShoppingCart, Heart, Search, User, LogOut } from "lucide-react";
@@ -27,8 +27,9 @@ const Header = () => {  // Change 'header' to 'Header'
               </svg>
             </button>
             
-            <div className="text-center flex-1 lg:flex-none">
-              <Link to="/shop" className="text-2xl font-bold">KP-COLLECTION</Link>
+            <div className="text-center flex-1 lg:flex-none justify-center items-center flex">
+              <img src={logo} alt="KP Collection Logo" className="h-8 inline-block" />
+              <Link to="/shop" className={`${window.innerWidth>=1024?"text-2xl":''} font-bold`}>KP-COLLECTION</Link>
             </div>
             
             <div className="hidden lg:flex items-center space-x-8 flex-1 justify-center">
