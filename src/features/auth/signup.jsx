@@ -1,9 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from 'js-cookie';
+import Header from "../navigation/header";
 
 const Signup = ({ error }) => {
+  const navigate = useNavigate();
+
   useEffect(() => {
     Cookies.remove('token');
   }, []);
@@ -32,13 +35,17 @@ const Signup = ({ error }) => {
         `${process.env.REACT_APP_BACKEND_URL}/auth/signup`,
         formdata
       );
-      console.log(response);
+      if (response.status === 200) {
+        navigate('/login');
+      }
     } catch (err) {
       console.log(err);
     }
   };
 
   return (
+    <>
+    <Header/>
     <div className="min-h-screen flex flex-col md:flex-row">
       {/* Left Side - Black Background */}
       <div className="md:w-1/3 bg-zinc-900 p-8 flex flex-col justify-center items-center">
@@ -146,6 +153,7 @@ const Signup = ({ error }) => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
