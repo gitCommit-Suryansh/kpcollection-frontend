@@ -1,15 +1,12 @@
 import React, { useEffect, useRef } from "react";
-import Header from "../navigation/header"; // Adjust the path as necessary
-import axios from "axios";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import Cookies from 'js-cookie';
 
 const Signup = ({ error }) => {
-
-  // useEffect(()=>{
-  //   Cookies.remove('token');
-  // },[])
-  
+  useEffect(() => {
+    Cookies.remove('token');
+  }, []);
 
   const nameRef = useRef();
   const emailRef = useRef();
@@ -42,125 +39,113 @@ const Signup = ({ error }) => {
   };
 
   return (
-    <>
-      <Header />
-      <style>
-        {`
-          @media (max-width: 1024px) {
-            .main-div2 {
-              width: auto;
-            }
-            .main-div {
-              padding-top: 10vh !important;
-            }
-            .main-div, .main-div2 {
-              width: auto !important;
-            }
-            .main-div > div, .main-div2 > div {
-              padding-left: 9px !important;
-              padding-right: 9px !important;
-            }
-            .container {
-              padding-left: 0 !important;
-              padding-right: 0 !important;
-              flex-direction: column !important;
-              padding-top: 10vh !important;
-            }
-          }
-        `}
-      </style>
-
-      {/* {error.length > 0 && (
-        <div className="absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md bg-red-500">
-          <span className="inline-block mt-1 mb-1 text-white">
-            {error}
-          </span>
+    <div className="min-h-screen flex flex-col md:flex-row">
+      {/* Left Side - Black Background */}
+      <div className="md:w-1/3 bg-zinc-900 p-8 flex flex-col justify-center items-center">
+        <div className="text-white text-center">
+          <h1 className="text-4xl font-bold mb-4">KP-COLLECTION</h1>
+          <p className="text-zinc-400 mb-6">Discover our exclusive collection</p>
+          <div className="w-16 h-1 bg-white mx-auto mb-6"></div>
+          <p className="text-sm text-zinc-400">Already have an account?</p>
+          <Link to="/login">
+            <button className="mt-4 px-8 py-2 border border-white text-white rounded-full hover:bg-white hover:text-zinc-900 transition-colors duration-300">
+              Sign In
+            </button>
+          </Link>
         </div>
-      )} */}
+      </div>
 
-      <div className="container w-full h-screen flex px-20">
-        <div className="main-div  flex items-center justify-center h-screen">
-          <div className="w-full px-32">
-            <h3 className="text-4xl">
-              welcome to{" "}
-              <span className="text-blue-400 font-semibold">KP-COLLECTION</span>
-            </h3>
-            <h4 className="text-2xl mb-5">create your account</h4>
-            <form autoComplete="off" onSubmit={handlesubmit}>
-              <input
-                className="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="text"
-                placeholder="Full Name"
-                name="name"
-                ref={nameRef}
-              />
-              <input
-                className="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="email"
-                placeholder="Email"
-                name="email"
-                ref={emailRef}
-              />
-              <input
-                className="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="password"
-                placeholder="Password"
-                name="password"
-                ref={passwordRef}
-              />
+      {/* Right Side - White Background */}
+      <div className="md:w-2/3 bg-white p-8 flex items-center justify-center">
+        <div className="w-full max-w-2xl">
+          <h2 className="text-3xl font-semibold mb-8 text-zinc-800">Create Your Account</h2>
+          
+          <form onSubmit={handlesubmit} className="space-y-6">
+            <div className="flex flex-col md:flex-row gap-4">
+              {/* Personal Information */}
+              <div className="flex-1 space-y-4">
+                <div>
+                  <input
+                    ref={nameRef}
+                    type="text"
+                    placeholder="Full Name"
+                    className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    ref={emailRef}
+                    type="email"
+                    placeholder="Email Address"
+                    className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    ref={passwordRef}
+                    type="password"
+                    placeholder="Password"
+                    className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                  />
+                </div>
+              </div>
 
-              <input
-                className="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="text"
-                placeholder="Street"
-                name="street"
-                ref={streetRef}
-              />
+              {/* Address Information */}
+              <div className="flex-1 space-y-4">
+                <div>
+                  <input
+                    ref={streetRef}
+                    type="text"
+                    placeholder="Street Address"
+                    className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                  />
+                </div>
+                <div>
+                  <input
+                    ref={cityRef}
+                    type="text"
+                    placeholder="City"
+                    className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                  />
+                </div>
+                <div className="grid grid-cols-2 gap-4">
+                  <input
+                    ref={stateRef}
+                    type="text"
+                    placeholder="State"
+                    className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                  />
+                  <input
+                    ref={postalCodeRef}
+                    type="text"
+                    placeholder="Postal Code"
+                    className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                  />
+                </div>
+              </div>
+            </div>
 
-              <input
-                className="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="text"
-                placeholder="City"
-                name="city"
-                ref={cityRef}
-              />  
-
-              <input
-                className="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="text"
-                placeholder="State"
-                name="state"
-                ref={stateRef}
-              />  
-
-              <input
-                className="bg-zinc-100 block w-full px-3 py-2 border-[1px] rounded-md mb-3 border-zinc-200"
-                type="text"
-                placeholder="Postal Code"
-                name="postalCode"
-                ref={postalCodeRef}
-              />  
-              
-              
-
+            <div className="pt-6">
               <button
-                className="px-5 rounded-full py-3 mt-2 bg-blue-500 text-white"
                 type="submit"
+                className="w-full bg-zinc-900 text-white py-4 rounded-lg hover:bg-zinc-800 transition-colors duration-300 font-medium"
               >
                 Create Account
               </button>
-            </form>
-            <div className="mt-5">
-              <Link to="/login">
-                <button className="px-5 rounded-full py-2 mt-2 bg-gray-500 text-white">
-                  Go to Login
-                </button>
-              </Link>
             </div>
+          </form>
+
+          <div className="mt-6 text-center md:hidden">
+            <p className="text-sm text-zinc-600">Already have an account?</p>
+            <Link to="/login">
+              <button className="mt-2 text-zinc-900 hover:underline">
+                Sign In
+              </button>
+            </Link>
           </div>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 
