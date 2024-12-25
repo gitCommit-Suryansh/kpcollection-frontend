@@ -33,6 +33,9 @@ const CreateProduct = () => {
   // State for selected category
   const [selectedCategory, setSelectedCategory] = useState("");
 
+  // State for size options
+  const [sizeOptions, setSizeOptions] = useState([]);
+
   // Handle size checkbox change
   const handleSizeChange = (size) => {
     setSelectedSizes((prevSizes) => {
@@ -78,7 +81,17 @@ const CreateProduct = () => {
       setErrorMessage("Failed to create product. Please try again.");
     }
   };
-  
+
+  useEffect(() => {
+    // Update size options based on selected category
+    if (selectedCategory === "Shirt" || selectedCategory === "T-Shirts") {
+      setSizeOptions(['S', 'M', 'L', 'XL', 'XXL']);
+    } else if (selectedCategory === "Jeans" || selectedCategory === "Lower") {
+      setSizeOptions(['26', '28', '30', '32', '34', '36']);
+    } else {
+      setSizeOptions([]); // Reset if no valid category is selected
+    }
+  }, [selectedCategory]);
 
   return (
     <div className="min-h-screen flex flex-col">
@@ -132,18 +145,22 @@ const CreateProduct = () => {
             <div className="mb-6">
               <h3 className="text-lg font-semibold mb-2">Select Sizes</h3>
               <div className="grid grid-cols-2 gap-4">
-                {['S', 'M', 'L', 'XL', 'XXL'].map(size => (
-                  <label key={size} className="flex items-center">
-                    <input
-                      type="checkbox"
-                      value={size}
-                      checked={selectedSizes.includes(size)}
-                      onChange={() => handleSizeChange(size)}
-                      className="mr-2"
-                    />
-                    {size}
-                  </label>
-                ))}
+                {sizeOptions.length > 0 ? (
+                  sizeOptions.map(size => (
+                    <label key={size} className="flex items-center">
+                      <input
+                        type={selectedCategory === "Jeans" || selectedCategory === "Lower" ? "checkbox" : "radio"}
+                        value={size}
+                        checked={selectedSizes.includes(size)}
+                        onChange={() => handleSizeChange(size)}
+                        className="mr-2"
+                      />
+                      {size}
+                    </label>
+                  ))
+                ) : (
+                  <p className="text-gray-600">Please select a category to see sizes.</p>
+                )}
               </div>
             </div>
 

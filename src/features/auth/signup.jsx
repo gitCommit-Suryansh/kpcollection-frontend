@@ -79,11 +79,11 @@ const Signup = ({ error }) => {
       )} */}
 
       <div className="container w-full h-screen flex px-20">
-        <div className="main-div w-1/2 flex items-center justify-center h-screen">
+        <div className="main-div  flex items-center justify-center h-screen">
           <div className="w-full px-32">
             <h3 className="text-4xl">
               welcome to{" "}
-              <span className="text-blue-400 font-semibold">Scratch</span>
+              <span className="text-blue-400 font-semibold">KP-COLLECTION</span>
             </h3>
             <h4 className="text-2xl mb-5">create your account</h4>
             <form autoComplete="off" onSubmit={handlesubmit}>
