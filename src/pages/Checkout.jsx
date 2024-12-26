@@ -32,12 +32,21 @@ const Checkout = () => {
 
   useEffect(() => {
     const cookieValue = document.cookie.split("; ").find((row) => row.startsWith("paymentDetails="))?.split("=")[1];
+    const queryParams = new URLSearchParams(location.search);
+    const paymentDetailsQuery = queryParams.get("paymentDetails");
+
     if (location.state && location.state.totalAmount) {
           // Case: Navigated from Cart.jsx
           setTotalAmount(location.state.totalAmount);
-        }
-        
-    if (cookieValue) {
+    }
+
+    // Check for paymentDetails in query parameters
+    if (paymentDetailsQuery) {
+          const decryptedData = decrypt(decodeURIComponent(paymentDetailsQuery));
+          const paymentDetails = JSON.parse(decryptedData);
+          setpaymentDetails(paymentDetails);
+          setTotalAmount(paymentDetails.data.amount / 100);
+    } else if (cookieValue) {
           const decryptedData = decrypt(decodeURIComponent(cookieValue));
           const paymentDetails = JSON.parse(decryptedData);
           setpaymentDetails(paymentDetails);
