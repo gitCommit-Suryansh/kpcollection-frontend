@@ -1,4 +1,3 @@
-
 import './App.css';
 import Signup from './features/auth/signup'
 import Login from './features/auth/login';
@@ -17,6 +16,9 @@ import MyAccount from './pages/MyAccount';
 import MyOrders from './features/MyAccountPages/MyOrders';
 import MyProfile from './features/MyAccountPages/MyProfile';
 import OrderDetails from './features/MyAccountPages/OrderDetails';
+import Collection from './features/Collection/Collection';
+import Success from './features/payment/Success';
+import Failure from './features/payment/Failure';
 import { Buffer } from 'buffer';
 
 
@@ -41,6 +43,9 @@ function App() {
         <Route path='/product/:id' element={<ProductDetails />} />
         <Route path='/checkout' element={<ProtectedRoute element={<Checkout/>} />} />
         <Route path='/orderconfirmed' element={<OrderConfirmed/>} />
+        <Route path='/collection/:category' element={<Collection/>}/>
+        <Route path='/payment/success' element={<Success/>} />
+        <Route path='/payment/failure' element={<Failure/>} />
       </Routes>
     </Router>
     </>

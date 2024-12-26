@@ -4,6 +4,7 @@ import axios from "axios";
 import Cookies from "js-cookie";
 import decodeToken from "../utils/decodeToken";
 import Header from "../features/navigation/header";
+import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
   const { id } = useParams();
@@ -18,7 +19,7 @@ const ProductDetails = () => {
   const token = Cookies.get("token");
   const decodedToken = decodeToken(token);
   const userId = decodedToken.id;
-  
+
   useEffect(() => {
     const fetchProductDetails = async () => {
       try {
@@ -79,14 +80,20 @@ const ProductDetails = () => {
         {message && (
           <div
             className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-3 z-50 
-          ${message === "Product added to cart" ? "bg-green-500" : "bg-red-500"} 
+          ${
+            message === "Product added to cart" ? "bg-green-500" : "bg-red-500"
+          } 
           text-white rounded-lg shadow-lg`}
           >
             {message}
           </div>
         )}
 
-        <div className={`grid ${window.innerWidth > 1024 ? "grid-cols-12" : "grid-cols-1"} gap-8`}>
+        <div
+          className={`grid ${
+            window.innerWidth > 1024 ? "grid-cols-12" : "grid-cols-1"
+          } gap-8`}
+        >
           {/* Left Sidebar - Thumbnail Images */}
           {window.innerWidth > 1024 ? (
             <div className="col-span-1">
@@ -94,10 +101,14 @@ const ProductDetails = () => {
                 {productDets.images.map((image, index) => (
                   <img
                     key={index}
-                    src={`data:image/jpg;base64,${Buffer.from(image.data).toString('base64')}`}
+                    src={`data:image/jpg;base64,${Buffer.from(
+                      image.data
+                    ).toString("base64")}`}
                     alt={`Thumbnail ${index + 1}`}
                     className={`w-full aspect-square object-cover cursor-pointer border
-                ${selectedImage === index ? "border-black" : "border-gray-200"}`}
+                ${
+                  selectedImage === index ? "border-black" : "border-gray-200"
+                }`}
                     onClick={() => setSelectedImage(index)}
                   />
                 ))}
@@ -106,15 +117,23 @@ const ProductDetails = () => {
           ) : null}
 
           {/* Main Image */}
-          <div className={`col-span-1 ${window.innerWidth > 1024 ? "md:col-span-6" : ""}`}>
+          <div
+            className={`col-span-1 ${
+              window.innerWidth > 1024 ? "md:col-span-6" : ""
+            }`}
+          >
             <img
-              src={`data:image/jpg;base64,${Buffer.from(productDets.images[selectedImage].data).toString('base64')}`}
+              src={`data:image/jpg;base64,${Buffer.from(
+                productDets.images[selectedImage].data
+              ).toString("base64")}`}
               alt="Main Product"
               className="w-full aspect-[3/4] object-cover"
             />
-            <button className="mt-4 w-full py-2 border border-gray-300 text-gray-700">
-              VIEW SIMILAR
-            </button>
+            <Link to={`/collection/${productDets.category}`}>
+              <button className="mt-4 w-full py-2 border border-gray-300 text-gray-700">
+                VIEW SIMILAR
+              </button>
+            </Link>
           </div>
 
           {/* Thumbnail Images for Mobile View */}
@@ -123,10 +142,14 @@ const ProductDetails = () => {
               {productDets.images.map((image, index) => (
                 <img
                   key={index}
-                  src={`data:image/jpg;base64,${Buffer.from(image.data).toString('base64')}`}
+                  src={`data:image/jpg;base64,${Buffer.from(
+                    image.data
+                  ).toString("base64")}`}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-16 h-16 aspect-square object-cover cursor-pointer border
-                ${selectedImage === index ? "border-black" : "border-gray-200"}`}
+                ${
+                  selectedImage === index ? "border-black" : "border-gray-200"
+                }`}
                   onClick={() => setSelectedImage(index)}
                 />
               ))}
@@ -134,7 +157,11 @@ const ProductDetails = () => {
           )}
 
           {/* Product Details */}
-          <div className={`col-span-1 ${window.innerWidth > 1024 ? "md:col-span-5" : ""}`}>
+          <div
+            className={`col-span-1 ${
+              window.innerWidth > 1024 ? "md:col-span-5" : ""
+            }`}
+          >
             <h1 className="text-xl font-medium mb-4">
               {capitalizeWords(productDets.name)}
             </h1>
@@ -177,7 +204,11 @@ const ProductDetails = () => {
                   <button
                     key={size}
                     className={`w-12 h-12 border flex items-center justify-center text-sm hover:border-black 
-                    ${selectedSize === size ? "border-2 border-black" : "border-gray-300"}`}
+                    ${
+                      selectedSize === size
+                        ? "border-2 border-black"
+                        : "border-gray-300"
+                    }`}
                     onClick={() => setSelectedSize(size)}
                   >
                     {size}
@@ -188,7 +219,9 @@ const ProductDetails = () => {
 
             {/* Quantity Selection */}
             <div className="mb-6">
-              <label htmlFor="quantity" className="text-sm font-medium">SELECT QUANTITY</label>
+              <label htmlFor="quantity" className="text-sm font-medium">
+                SELECT QUANTITY
+              </label>
               <select
                 id="quantity"
                 value={quantity}
@@ -196,7 +229,9 @@ const ProductDetails = () => {
                 className="mt-2 border border-gray-300 rounded p-2 ml-3"
               >
                 {[1, 2, 3, 4, 5].map((q) => (
-                  <option key={q} value={q}>{q}</option>
+                  <option key={q} value={q}>
+                    {q}
+                  </option>
                 ))}
               </select>
             </div>

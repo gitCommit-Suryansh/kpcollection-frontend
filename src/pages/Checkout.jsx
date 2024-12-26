@@ -3,21 +3,48 @@ import Header from "../features/navigation/header";
 import Cookies from "js-cookie";
 import decodeToken from "../utils/decodeToken";
 import axios from "axios";
-import cc from "../assets/images/cc.png";
 import { useLocation, useNavigate } from "react-router-dom";
+import CryptoJS from 'crypto-js';
+
+const ENCRYPTION_KEY = "PhonepeEncryptionKey".padEnd(32, '0');
+
+function decrypt(text) {
+  const parts = text.split(':');
+  const iv = CryptoJS.enc.Hex.parse(parts[0]);
+  const encryptedText = CryptoJS.enc.Hex.parse(parts[1]);
+
+  const decrypted = CryptoJS.AES.decrypt(
+    { ciphertext: encryptedText },
+    CryptoJS.enc.Utf8.parse(ENCRYPTION_KEY),
+    { iv: iv }
+  );
+
+  return decrypted.toString(CryptoJS.enc.Utf8);
+}
 
 const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [totalAmount, setTotalAmount] = useState(0);
-  const [paymentMethod, setPaymentMethod] = useState("");
+  const [paidAmount, setPaidAmount] = useState(0);
+  const [paymentDetails, setpaymentDetails] = useState();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    const cookieValue = document.cookie.split("; ").find((row) => row.startsWith("paymentDetails="))?.split("=")[1];
     if (location.state && location.state.totalAmount) {
-      setTotalAmount(location.state.totalAmount);
+          // Case: Navigated from Cart.jsx
+          setTotalAmount(location.state.totalAmount);
+        }
+        
+    if (cookieValue) {
+          const decryptedData = decrypt(decodeURIComponent(cookieValue));
+          const paymentDetails = JSON.parse(decryptedData);
+          setpaymentDetails(paymentDetails);
+          setTotalAmount(paymentDetails.data.amount / 100);
     }
-  }, [location.state]);
+  }, []);
+  console.log(paymentDetails)
 
   const token = Cookies.get("token");
   const decodedToken = decodeToken(token);
@@ -38,31 +65,21 @@ const Checkout = () => {
   }, [userId]);
 
   const handlePayment = async () => {
-    if (!paymentMethod) {
-      alert("Please select a payment method");
-      return;
-    }
-
+    console.log("clicked");
     try {
-      const order = {
-        userId: user._id,
-        username: user.name,
-        products: user.cart.map(item => ({
-          productId: item._id,
-          quantity: 1,
-          price: item.price
-        })),
-        totalAmount: totalAmount,
-        shippingAddress: user.address,
-        paymentMethod: paymentMethod,
-        paymentStatus: paymentMethod === "Cash on Delivery" ? "Pending" : "Completed",
-        orderStatus: "Processing"
-      };
-
-      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/order/createorder`, {order});
-      
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/api/phonepe/pay`,
+        {
+          amount: totalAmount * 100,
+          mobileNumber: user.mobileNumber,
+          userId: user._id,
+        }
+      );
       if (response.status === 200) {
-        navigate('/orderconfirmed', { state: { order: response.data.order } });
+        window.location.assign(response.data.url);
+        console.log(response.data);
+      } else {
+        throw new Error("Failed to initiate payment");
       }
     } catch (error) {
       console.error("Error creating order:", error);
@@ -70,156 +87,87 @@ const Checkout = () => {
     }
   };
 
-  const handlePaymentMethodChange = (e) => {
-    setPaymentMethod(e.target.value);
-  };
-
-  // const submitOrderId = async(orderId) => {
-  //   const orderidsubmit=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/order/updateorder/${orderId}`,user)
-  //   if(orderidsubmit.status===200){
-  //     console.log("succefull hogya bhai")
-  //   }
-  //   else{
-  //     console.log("kuch to gadbad hai")
-  //   }
-  // }
-
   return (
-    <>
+    <div className="min-h-screen bg-white">
       <Header />
       {user && (
-        <div className="py-10 px-24 flex mt-20">
-          <div className="w-2/3">
-            <div className="mb-4">
-              <h1 className="text-xl font-bold">1. Delivery address</h1>
-              <div className="ml-6">
-                <p>{user.name}</p>
-                <p>{user.address.street}</p>
-                <p>{user.address.city}</p>
-                <p>
-                  {user.address.state} {user.address.postalCode}
-                </p>
-                <a href="#" className="text-teal-600">
-                  Add delivery instructions
-                </a>
-              </div>
-              <a href="#" className="text-teal-600 ml-6">
-                Change
-              </a>
-            </div>
-            <div className="mb-4">
-              <h1 className="text-xl font-bold text-orange-600">
-                2. Select a payment method
+        <div className="flex flex-col md:flex-row min-h-[calc(100vh-64px)]">
+          {/* Left Side - Order Details */}
+          <div className="md:w-2/3 bg-zinc-50 p-8 md:p-16">
+            <div className="max-w-2xl mx-auto">
+              <h1 className="text-3xl font-bold text-zinc-900 mb-8">
+                Checkout
               </h1>
-              <div className="flex items-center border p-4 mb-4">
-                <img
-                  src={cc}
-                  alt="Credit card image"
-                  className="mr-4 w-[5.5vw] h-[5.5vw]"
-                />
-                <div>
+
+              {/* Delivery Address Section */}
+              <div className="bg-white p-8 rounded-lg shadow-sm mb-8">
+                <div className="flex justify-between items-start mb-4">
+                  <h2 className="text-xl font-semibold text-zinc-800">
+                    Delivery Address
+                  </h2>
+                  <button className="text-zinc-900 text-sm hover:underline">
+                    Change
+                  </button>
+                </div>
+                <div className="space-y-2 text-zinc-600">
+                  <p className="font-medium text-zinc-900">{user.name}</p>
+                  <p>{user.address.street}</p>
+                  <p>{user.address.city}</p>
                   <p>
-                    Get credit card approval in 30 minutes. Get{" "}
-                    <span className="font-bold">(Rs.23.37)</span>
+                    {user.address.state} {user.address.postalCode}
                   </p>
-                  <button className="bg-blue-400 text-white px-4 py-2 mt-2">
-                    Apply Now
-                  </button>
                 </div>
-              </div>
-              <div className="border p-4 mb-4">
-                <h2 className="text-lg font-bold">Your available balance</h2>
-                <div className="flex items-center mb-2">
-                  <input type="radio" name="payment" className="mr-2" />
-                  <div>
-                    <p> Balance ₹0.00 Unavailable</p>
-                    <p className="text-sm text-gray-500">
-                      Insufficient balance.{" "}
-                      <a href="#" className="text-teal-600">
-                        Add money & get rewarded
-                      </a>
-                    </p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <input
-                    type="text"
-                    placeholder="Enter Code"
-                    className="border p-2 mr-2"
-                  />
-                  <button className="bg-gray-200 text-gray-700 px-4 py-2">
-                    Apply
-                  </button>
-                </div>
-              </div>
-              <div className="border p-4">
-                <h2 className="text-lg font-bold">Another payment method</h2>
-                <div className="flex items-center mb-2">
-                  <input type="radio" name="payment" className="mr-2" value="Credit or debit card" onChange={handlePaymentMethodChange} />
-                  <div>
-                    <p>Credit or debit card</p>
-                    <img
-                      src={cc}
-                      alt="Credit card logos"
-                      className="w-[5.5vw] h-[5.5vw]"
-                    />
-                  </div>
-                </div>
-                <div className="flex items-center mb-2">
-                  <input type="radio" name="payment" className="mr-2" value="Net Banking" onChange={handlePaymentMethodChange} />
-                  <div>
-                    <p>Net Banking</p>
-                    <select className="border p-2">
-                      <option>Choose an Option</option>
-                    </select>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <input type="radio" name="payment" className="mr-2" value="Other UPI Apps" onChange={handlePaymentMethodChange} />
-                  <div>
-                    <p>Other UPI Apps</p>
-                  </div>
-                </div>
-                <div className="flex items-center">
-                  <input type="radio" name="payment" className="mr-2" value="Cash on Delivery" onChange={handlePaymentMethodChange} />
-                  <div>
-                    <p>Cash on Delivery</p>
-                  </div>
-                </div>
+                <button className="text-zinc-900 text-sm mt-4 hover:underline">
+                  Add delivery instructions
+                </button>
               </div>
             </div>
           </div>
-          <div className="w-1/3 ml-4">
-            <div className="border p-4 bg-yellow-100 mb-4">
-              <button className="bg-yellow-300 text-gray-700 px-4 py-2 mb-4">
-                Use this payment method
-              </button>
-              <p>
-                Choose a payment method to continue checking out. You will still
-                have a chance to review and edit your order before it is final.
-              </p>
-            </div>
-            <div className="border p-4">
-              <h2 className="text-lg font-bold">Order Summary</h2>
-              <p>Items: ₹{totalAmount}</p>
-              <p>Total: --</p>
-              <p>Promotion Applied: --</p>
-              <h2 className="text-lg font-bold text-orange-600">
-                Order Total: ₹{totalAmount}
+
+          {/* Right Side - Order Summary */}
+          <div className="md:w-1/3 bg-white p-8 md:p-16 border-l border-zinc-100">
+            <div className="sticky top-8">
+              <h2 className="text-2xl font-bold text-zinc-900 mb-8">
+                Order Summary
               </h2>
-              <a href="#" className="text-teal-600">
-                How are delivery costs calculated?
-              </a>
-            </div>
-            <div className="border pt-1">
-              <button className="bg-orange-400 text-white font-bold px-4 py-2 w-full h-[6.5vh]" onClick={handlePayment}>
+
+              <div className="space-y-4 mb-8">
+                <div className="flex justify-between">
+                  <span className="text-zinc-600">Items Total</span>
+                  <span className="font-medium">₹{totalAmount}</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-zinc-600">Delivery</span>
+                  <span className="font-medium">Free</span>
+                </div>
+                <div className="flex justify-between">
+                  <span className="text-zinc-600">Promotion Applied</span>
+                  <span className="font-medium">--</span>
+                </div>
+                <div className="h-px bg-zinc-200 my-4"></div>
+                <div className="flex justify-between text-lg font-bold">
+                  <span>Order Total</span>
+                  <span>₹{totalAmount}</span>
+                </div>
+              </div>
+
+              <button
+                onClick={handlePayment}
+                className="w-full bg-zinc-900 text-white py-4 rounded-lg hover:bg-zinc-800 transition-colors duration-300 font-medium"
+              >
                 Proceed to Payment
               </button>
+
+              <p className="text-sm text-zinc-500 mt-4 text-center">
+                <button className="hover:underline">
+                  How are delivery costs calculated?
+                </button>
+              </p>
             </div>
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 };
 

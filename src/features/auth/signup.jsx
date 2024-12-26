@@ -18,6 +18,7 @@ const Signup = ({ error }) => {
   const cityRef = useRef();
   const stateRef = useRef();
   const postalCodeRef = useRef();
+  const mobileNumberRef = useRef();
 
   const handlesubmit = async (e) => {
     e.preventDefault();
@@ -29,6 +30,7 @@ const Signup = ({ error }) => {
       city: cityRef.current.value,
       state: stateRef.current.value,
       postalCode: postalCodeRef.current.value,
+      mobileNumber: mobileNumberRef.current.value,
     };
     try {
       const response = await axios.post(
@@ -129,6 +131,15 @@ const Signup = ({ error }) => {
                     className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
                   />
                 </div>
+              </div>
+
+              <div>
+                <input
+                  ref={mobileNumberRef}
+                  type="text"
+                  placeholder="Mobile Number"
+                  className="w-full px-4 py-3 bg-transparent border-b-2 border-zinc-200 focus:border-zinc-900 outline-none transition-colors"
+                />
               </div>
             </div>
 
