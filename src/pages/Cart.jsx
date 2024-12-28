@@ -101,9 +101,7 @@ const Cart = () => {
                     <div className="w-32 aspect-[3/4]">
                       <Link to={`/product/${item.product._id}`}>
                         <img
-                          src={`data:image/jpg;base64,${Buffer.from(
-                      item.product.images[0].data
-                    ).toString("base64")}`}
+                          src={`data:image/jpg;base64,${Buffer.from(item.product.images[0].data).toString("base64")}`}
                           alt={item.product.name}
                           className="w-full h-full object-cover"
                         />

@@ -13,11 +13,7 @@ function decrypt(text) {
   const iv = CryptoJS.enc.Hex.parse(parts[0]);
   const encryptedText = CryptoJS.enc.Hex.parse(parts[1]);
 
-  const decrypted = CryptoJS.AES.decrypt(
-    { ciphertext: encryptedText },
-    CryptoJS.enc.Utf8.parse(ENCRYPTION_KEY),
-    { iv: iv }
-  );
+  const decrypted = CryptoJS.AES.decrypt({ ciphertext: encryptedText },CryptoJS.enc.Utf8.parse(ENCRYPTION_KEY),{ iv: iv });
 
   return decrypted.toString(CryptoJS.enc.Utf8);
 }
@@ -29,8 +25,13 @@ const Checkout = () => {
   const [paidAmount, setPaidAmount] = useState(0);
   const [paymentDetails, setpaymentDetails] = useState();
   const [user, setUser] = useState(null);
+  
+  const token = Cookies.get("token");
+  const decodedToken = decodeToken(token);
+  const userId = decodedToken.id;
 
   useEffect(() => {
+  
     const queryParams = new URLSearchParams(location.search);
     const paymentDetailsQuery = queryParams.get("paymentDetails");
 
@@ -46,12 +47,55 @@ const Checkout = () => {
           setpaymentDetails(paymentDetails);
           setTotalAmount(paymentDetails.data.amount / 100);
     }
-  }, []);
-  console.log(paymentDetails)
+  }, [location.state]); // Run this effect when location.state changes
 
-  const token = Cookies.get("token");
-  const decodedToken = decodeToken(token);
-  const userId = decodedToken.id;
+  useEffect(() => {
+    // Create the object only if user.cart and paymentDetails.data exist
+    if (user && user.cart && paymentDetails && paymentDetails.data) {
+     
+      const userDetails = {
+        userId: decodedToken.id, // Assuming decodedToken is defined in your scope
+        email: decodedToken.email, // Assuming email is part of decodedToken
+        name: decodedToken.name, // Assuming name is part of decodedToken
+        mobileNumber: user.mobileNumber, // Assuming user has mobileNumber
+        iat: decodedToken.iat, // Assuming iat is part of decodedToken
+        address: user.address, // Add the address object
+      };
+      // Create a new array of productDetails with only product._id, size, and quantity
+      const productDetails = user.cart.map(item => ({
+        productId: item.product._id, // Only keep the product._id
+        size: item.size,           // Keep the size
+        quantity: item.quantity     // Keep the quantity
+      }));
+
+      const paymentDetailsObject = paymentDetails; // Use the paymentDetails variable
+
+      const orderDetails = {
+        userDetails,
+        productDetails,
+        paymentDetails: paymentDetailsObject,
+      };
+
+      console.log(orderDetails); // Log the modified orderDetails
+
+      // Send orderDetails to the backend
+      const createOrder = async () => {
+        try {
+          const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/order/createorder`, orderDetails);
+          console.log("Order created successfully:", response.data);
+          // Handle success (e.g., navigate to a confirmation page)
+        } catch (error) {
+          console.error("Error creating order:", error);
+          // Handle error (e.g., show an error message to the user)
+        }
+      };
+
+      createOrder(); // Call the function to create the order
+    }
+  }, [user, paymentDetails]); // Add user and paymentDetails as dependencies
+
+
+  
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -95,14 +139,23 @@ const Checkout = () => {
       <Header />
       {user && (
         <div className="flex flex-col md:flex-row min-h-[calc(100vh-64px)]">
-          {/* Left Side - Order Details */}
+          {/* New Section - Cart Items */}
           <div className="md:w-2/3 bg-zinc-50 p-8 md:p-16">
-            <div className="max-w-2xl mx-auto">
-              <h1 className="text-3xl font-bold text-zinc-900 mb-8">
-                Checkout
-              </h1>
+            <div className="flex flex-col">
+              <h2 className="text-xl font-semibold text-zinc-800 mb-4">Your Cart Items</h2>
+              {user.cart && user.cart.length > 0 ? (
+                <div className="bg-white p-8 rounded-lg shadow-sm mb-8">
+                  {user.cart.map((item) => (
+                    <div key={item.productId} className="flex justify-between mb-4 border-b pb-2">
+                      <span className="font-medium">{item.product.name} ({item.size})</span>
+                      <span>INR {item.product.price} x {item.quantity}</span>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-zinc-600">Your cart is empty.</p>
+              )}
 
-              {/* Delivery Address Section */}
               <div className="bg-white p-8 rounded-lg shadow-sm mb-8">
                 <div className="flex justify-between items-start mb-4">
                   <h2 className="text-xl font-semibold text-zinc-800">
