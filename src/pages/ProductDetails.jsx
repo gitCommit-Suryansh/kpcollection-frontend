@@ -46,6 +46,7 @@ const ProductDetails = () => {
       setMessage("Please select a size.");
       return;
     }
+    console.log(userId,selectedSize,quantity)
 
     try {
       const response = await axios.post(
@@ -68,9 +69,10 @@ const ProductDetails = () => {
 
   if (!productDets)
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-pulse text-gray-800">Loading...</div>
-      </div>
+      <div className="min-h-screen flex items-center justify-center flex-col gap-3">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="animate-pulse text-blue-500 pl-3">Loading...</div>
+    </div>
     );
 
   return (

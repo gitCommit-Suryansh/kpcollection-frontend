@@ -83,9 +83,10 @@ const Shop = () => {
 
   if (loading)
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-pulse text-gray-800">Loading...</div>
-      </div>
+      <div className="min-h-screen flex items-center justify-center flex-col gap-3">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="animate-pulse text-blue-500 pl-3">Loading...</div>
+    </div>
     );
 
   if (error)
@@ -187,7 +188,9 @@ const Shop = () => {
           {fetchedProducts.map((product, index) => (
             <div
               key={index}
-              className={`group z-2 ${window.innerWidth > 1024 ? "scale-[90%]" : ""}`}
+              className={`group z-2 ${
+                window.innerWidth > 1024 ? "scale-[90%]" : ""
+              }`}
             >
               <Link to={`/product/${product._id}`} className="block relative">
                 <div className="aspect-[3/4] overflow-hidden bg-gray-100">

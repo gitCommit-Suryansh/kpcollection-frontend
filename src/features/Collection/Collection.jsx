@@ -65,8 +65,9 @@ const Collection = () => {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-white flex items-center justify-center">
-        <div className="animate-pulse text-gray-800">Loading...</div>
+      <div className="min-h-screen flex items-center justify-center flex-col gap-3">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-pulse text-blue-500 pl-3">Loading...</div>
       </div>
     );
   }
@@ -155,7 +156,12 @@ const Collection = () => {
           </h1>
           <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
             {filteredProducts.map((product) => (
-              <div key={product._id} className={`group z-2 ${window.innerWidth > 1024 ? "scale-[90%]" : ""}`}>
+              <div
+                key={product._id}
+                className={`group z-2 ${
+                  window.innerWidth > 1024 ? "scale-[90%]" : ""
+                }`}
+              >
                 <Link to={`/product/${product._id}`} className="block relative">
                   <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                     <img

@@ -75,7 +75,6 @@ const MyProfile = () => {
         setSuccess("Profile updated successfully");
       } else {
         setSuccess(response.data.message);
-
       }
     } catch (error) {
       console.error("Failed to update profile:", error);
@@ -97,23 +96,33 @@ const MyProfile = () => {
     setImagePreview(URL.createObjectURL(e.target.files[0]));
   };
 
-  if (loading) return <p>Loading...</p>;
+  if (loading)
+    return (
+      <div className="min-h-screen flex items-center justify-center flex-col gap-3">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+        <div className="animate-pulse text-blue-500 pl-3">Loading...</div>
+      </div>
+    );
   if (error) return <p>Error: {error}</p>;
 
   return (
     <>
-      <Header/> 
+      <Header />
       {success && success.length > 0 && (
         <div
           className={`absolute top-5 left-1/2 -translate-x-1/2 -translate-y-1/2 p-3 rounded-md ${
-            success === "Profile updated successfully" ? "bg-blue-500" : "bg-red-500"
+            success === "Profile updated successfully"
+              ? "bg-blue-500"
+              : "bg-red-500"
           }`}
         >
           <span className="inline-block mt-1 mb-1 text-white">{success}</span>
         </div>
       )}
       <div className="max-w-3xl mx-auto p-8 mt-16 bg-white rounded-lg shadow-lg">
-        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">My Profile</h2>
+        <h2 className="text-3xl font-bold text-gray-800 mb-8 text-center">
+          My Profile
+        </h2>
         <form onSubmit={handleUpdateProfile} encType="multipart/form-data">
           <div className="flex flex-col md:flex-row gap-8">
             <div className="w-full md:w-1/3">
@@ -125,10 +134,12 @@ const MyProfile = () => {
                       imagePreview
                         ? imagePreview
                         : profile
-                        ? `data:image/jpg;base64,${Buffer.from(profile.data).toString("base64")}`
+                        ? `data:image/jpg;base64,${Buffer.from(
+                            profile.data
+                          ).toString("base64")}`
                         : defaultProfile
                     })`,
-                    backgroundSize: "cover",  
+                    backgroundSize: "cover",
                     backgroundRepeat: "no-repeat",
                     backgroundPosition: "center",
                   }}
@@ -142,9 +153,13 @@ const MyProfile = () => {
                     onChange={handleImageChange}
                   />
                 </div>
-                <p className="text-gray-600 text-sm">Click to change profile picture</p>
+                <p className="text-gray-600 text-sm">
+                  Click to change profile picture
+                </p>
                 {selectedImage && (
-                  <p className="text-green-500 text-sm">Image selected successfully</p>
+                  <p className="text-green-500 text-sm">
+                    Image selected successfully
+                  </p>
                 )}
               </div>
             </div>
@@ -170,7 +185,7 @@ const MyProfile = () => {
                   htmlFor="email"
                 >
                   Email
-                </ label>
+                </label>
                 <input
                   className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
                   id="email"
@@ -180,7 +195,9 @@ const MyProfile = () => {
                 />
               </div>
               <div className="mb-4">
-                <h3 className="text-lg font-bold text-gray-800 mb-2">Change Your Password</h3>
+                <h3 className="text-lg font-bold text-gray-800 mb-2">
+                  Change Your Password
+                </h3>
                 <div className="flex flex-col gap-2">
                   <div className="flex flex-col">
                     <label
@@ -224,7 +241,9 @@ const MyProfile = () => {
           </div>
           {error && <p className="text-red-500 text-xs italic">{error}</p>}
           <button
-            className={`${selectedImage ? "bg-orange-500" : "bg-blue-700"} hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
+            className={`${
+              selectedImage ? "bg-orange-500" : "bg-blue-700"
+            } hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline`}
             type="submit"
           >
             Update Profile

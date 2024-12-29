@@ -25,6 +25,7 @@ const Checkout = () => {
   const [paidAmount, setPaidAmount] = useState(0);
   const [paymentDetails, setpaymentDetails] = useState();
   const [user, setUser] = useState(null);
+  const [isCreatingOrder, setIsCreatingOrder] = useState(false);
   
   const token = Cookies.get("token");
   const decodedToken = decodeToken(token);
@@ -50,25 +51,27 @@ const Checkout = () => {
   }, [location.state]); // Run this effect when location.state changes
 
   useEffect(() => {
-    // Create the object only if user.cart and paymentDetails.data exist
     if (user && user.cart && paymentDetails && paymentDetails.data) {
-     
+      if (isCreatingOrder) return;
+
+      setIsCreatingOrder(true);
+
       const userDetails = {
-        userId: decodedToken.id, // Assuming decodedToken is defined in your scope
-        email: decodedToken.email, // Assuming email is part of decodedToken
-        name: decodedToken.name, // Assuming name is part of decodedToken
-        mobileNumber: user.mobileNumber, // Assuming user has mobileNumber
-        iat: decodedToken.iat, // Assuming iat is part of decodedToken
-        address: user.address, // Add the address object
+        userId: decodedToken.id,
+        email: decodedToken.email,
+        name: decodedToken.name,
+        mobileNumber: user.mobileNumber,
+        iat: decodedToken.iat,
+        address: user.address,
       };
-      // Create a new array of productDetails with only product._id, size, and quantity
+
       const productDetails = user.cart.map(item => ({
-        productId: item.product._id, // Only keep the product._id
-        size: item.size,           // Keep the size
-        quantity: item.quantity     // Keep the quantity
+        productId: item.product._id,
+        size: item.size,       
+        quantity: item.quantity 
       }));
 
-      const paymentDetailsObject = paymentDetails; // Use the paymentDetails variable
+      const paymentDetailsObject = paymentDetails;
 
       const orderDetails = {
         userDetails,
@@ -76,23 +79,25 @@ const Checkout = () => {
         paymentDetails: paymentDetailsObject,
       };
 
-      console.log(orderDetails); // Log the modified orderDetails
-
-      // Send orderDetails to the backend
       const createOrder = async () => {
         try {
           const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/order/createorder`, orderDetails);
           console.log("Order created successfully:", response.data);
-          // Handle success (e.g., navigate to a confirmation page)
+          
+          if (response.data.order.paymentDetails.code === "PAYMENT_SUCCESS") {
+            navigate("/payment/success", { state: { orderId: response.data.order._id } });
+          }
+          
         } catch (error) {
           console.error("Error creating order:", error);
-          // Handle error (e.g., show an error message to the user)
+        } finally {
+          setIsCreatingOrder(false);
         }
       };
 
-      createOrder(); // Call the function to create the order
+      createOrder();
     }
-  }, [user, paymentDetails]); // Add user and paymentDetails as dependencies
+  }, [user, paymentDetails]);
 
 
   

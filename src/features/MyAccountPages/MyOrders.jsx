@@ -3,119 +3,134 @@ import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import decodeToken from "../../utils/decodeToken";
 import Header from "../navigation/header";
+import axios from "axios";
+
 const MyOrders = () => {
   const token = Cookies.get("token");
   const decoded = decodeToken(token);
   const userId = decoded.id;
   const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+ 
 
   useEffect(() => {
     const fetchOrders = async () => {
       try {
-        const response = await fetch(
-          `${process.env.REACT_APP_BACKEND_URL}/order/getorders/${userId}`
-        );
-        const data = await response.json();
-        if (data.orders) {
-          setOrders(data.orders);
+        const response = await axios.get(`${process.env.REACT_APP_BACKEND_URL}/order/getorders/${userId}`);
+        if (response.data) {
+          setOrders(response.data.orders);
+          console.log(response.data.orders)
         } else {
           setOrders([]);
         }
       } catch (error) {
         console.error("Failed to fetch orders:", error);
         setOrders([]);
+      } finally {
+        setLoading(false);
       }
+      
     };
     fetchOrders();
-  }, []);
+  }, [userId]);
+
+
+  // Function to convert Buffer to base64 image
+  const bufferToImage = (buffer) => {
+    if (!buffer || !buffer.data) return '';
+    try {
+      return `data:image/jpeg;base64,${Buffer.from(buffer.data).toString('base64')}`;
+    } catch (error) {
+      console.error("Error converting image:", error);
+      return '';
+    }
+  };
+
+  // Format date
+  const formatDate = (dateString) => {
+    const date = new Date(dateString);
+    return date.toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric',
+    });
+  };
+
+  
+  if (loading) return (
+    <div className="min-h-screen flex items-center justify-center flex-col gap-3">
+      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
+      <div className="animate-pulse text-blue-500 pl-3">Loading...</div>
+    </div>
+  );
+
 
   return (
     <>
       <Header />
-      <div className="max-w-7xl mx-auto p-4 mt-[12vh]">
-        <h2 className="text-3xl font-bold text-gray-800 mb-4">My Orders</h2>
+      <div className="container mx-auto px-4 py-8">
+        <h1 className="text-2xl font-bold mb-6">My Orders</h1>
+
         {orders.length === 0 ? (
-          <div className="flex justify-center items-center h-screen">
-            <div className="text-center">
-              <svg
-                className="w-12 h-12 text-gray-600"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z"
-                />
-              </svg>
-              <p className="text-lg font-bold text-gray-800 mt-4">
-                No orders found.
-              </p>
-              <p className="text-gray-600">
-                You haven't placed any orders yet.
-              </p>
-              <Link
-                to="/products"
-                className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded mt-4"
-              >
-                Start Shopping
-              </Link>
-            </div>
+          <div className="text-center py-8">
+            <p className="text-gray-600">No orders found</p>
+            <Link to="/shop" className="text-blue-500 hover:underline mt-2 inline-block">
+              Continue Shopping
+            </Link>
           </div>
         ) : (
-          <div className="grid grid-cols-1 gap-4">
-            {orders.map((order, index) => (
-              <div key={index} className="bg-white rounded-lg flex shadow-md p-4">
-                <div className="flex w-[26%] overflow-x-auto mr-4">
-                  {order.products.length > 0 && order.products.map((product, index) => 
-                    product.productId.images.length > 0 && (
-                      <img key={index} src={`data:image/jpeg;base64,${btoa(
-                              String.fromCharCode.apply(
-                                null,
-                                new Uint8Array(product.productId.images[0].data)
-                              )
-                            )}`} alt="Error loading image" className="w-[10vw] h-[10vw]" />
-                    )
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {orders.map((order) => (
+             <Link to={`/myaccount/myorders/${order._id}`}>
+               <div
+                key={order._id}
+                className="bg-white rounded-lg shadow-lg p-4 cursor-pointer hover:shadow-xl transition"
+              >
+                {/* Product Images */}
+                <div className="flex -space-x-4 overflow-hidden mb-4">
+                  {order.productDetails.slice(0, 3).map((product, index) => (
+                    <img
+                      key={index}
+                      src={bufferToImage(product.productId.images[0])}
+                      alt={product.productId.name}
+                      className="w-16 h-16 object-cover border rounded-full"
+                      onError={(e) => {
+                        e.target.src = 'placeholder-image-url';
+                        e.target.onerror = null;
+                      }}
+                    />
+                  ))}
+                  {order.productDetails.length > 3 && (
+                    <div className="w-16 h-16 bg-gray-200 text-gray-600 flex items-center justify-center rounded-full">
+                      +{order.productDetails.length - 3}
+                    </div>
                   )}
                 </div>
-                
-                <div className="w-[70%]">
-                  <div className="flex justify-between items-center mb-4">
-                    <h3 className="text-lg font-bold text-gray-900">
-                      Order #{order._id}
-                    </h3>
-                    <p className="text-gray-600 text-sm font-semibold">
-                      {new Date(order.orderDate).toLocaleDateString()}
-                    </p>
-                  </div>
-                  <div className="flex justify-between items-center mb-4">
-                    <p className="text-gray-600 text-lg font-semibold">
-                      Order Total: ₹{order.totalAmount}
-                    </p>
-                    <p className="text-gray-600">
-                      Status:{" "}
-                      <span className="font-bold text-orange-500">
-                        {order.orderStatus}
-                      </span>
-                    </p>
-                  </div>
-                  <Link
-                    to={`/myaccount/myorders/${order._id}`}
-                    className="bg-orange-500 hover:bg-orange-700 text-white font-bold py-2 px-4 rounded"
+
+                {/* Order Details */}
+                <div>
+                  <p className="text-gray-600 text-sm">Order ID</p>
+                  <p className="font-mono text-sm mb-2">{order._id}</p>
+                  <p className="text-sm text-gray-600 mb-1">Date: {formatDate(order.createdAt)}</p>
+                  <p className="text-sm text-gray-600 mb-1">Quantity: {order.productDetails.length}</p>
+                  <p className="text-sm text-gray-600 mb-1">Total: ₹{order.paymentDetails.data.amount/100}</p>
+                  <span
+                    className={`text-xs px-3 py-1 rounded-full ${
+                      order.paymentDetails.success
+                        ? 'bg-green-100 text-green-800'
+                        : 'bg-red-100 text-red-800'
+                    }`}
                   >
-                    View Order Details
-                  </Link>
-                  <div className="text-gray-400 text-sm font-semibold mt-4">
-                    {order.products.length} product In this Order
-                  </div>
+                    {order.paymentDetails.message}
+                  </span>
                 </div>
               </div>
+             </Link>
             ))}
           </div>
         )}
+
+        
       </div>
     </>
   );

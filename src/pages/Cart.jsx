@@ -24,7 +24,7 @@ const Cart = () => {
       setUser(response.data.user);
     };
     fetchCart();
-  }, [user]);
+  }, [userId]);
 
   useEffect(() => {
     if (user && user.cart) {
