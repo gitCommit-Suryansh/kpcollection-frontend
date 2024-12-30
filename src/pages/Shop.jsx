@@ -101,7 +101,7 @@ const Shop = () => {
       <Header />
 
       {/* Carousel Component */}
-      <div className="relative w-full h-64 sm:h-screen overflow-hidden">
+      <div className="relative w-full h-64 sm:h-screen overflow-hidden mt-16">
         <img
           src={images[currentImageIndex]}
           alt="Carousel"
