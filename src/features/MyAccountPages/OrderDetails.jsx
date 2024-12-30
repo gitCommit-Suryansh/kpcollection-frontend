@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { useParams } from "react-router-dom";
+import { Link, useParams } from "react-router-dom";
 import Header from "../navigation/header";
 
 const OrderDetails = () => {
@@ -27,7 +27,6 @@ const OrderDetails = () => {
           `${process.env.REACT_APP_BACKEND_URL}/order/getorderbyid/${id}`
         );
         setOrderDetails(response.data.order);
-        console.log(response.data.order)
       } catch (err) {
         setError(err.message);
       } finally {
@@ -80,18 +79,17 @@ const OrderDetails = () => {
       {
         label: "Account Holder",
         value: paymentInstrument.accountHolderName
-      },
-     
+      }
     ] : [];
 
     const allDetails = [...commonDetails, ...(paymentInstrument.type === "CARD" ? cardSpecificDetails : upiSpecificDetails)];
 
     return (
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {allDetails.map((detail, index) => (
-          <div key={index} className="space-y-2">
-            <p className="text-gray-600">{detail.label}:</p>
-            <p className="font-medium">{detail.value || "N/A"}</p>
+          <div key={index} className="bg-gray-50 p-4 rounded-lg">
+            <p className="text-sm text-gray-600 mb-1">{detail.label}</p>
+            <p className="font-medium text-gray-800 break-words">{detail.value || "N/A"}</p>
           </div>
         ))}
       </div>
@@ -130,7 +128,7 @@ const OrderDetails = () => {
                 Placed on {new Date(createdAt).toLocaleString()}
               </p>
             </div>
-            <div className="mt-4 md:mt-0 flex flex-col items-end">
+            <div className="mt-4 md:mt-0 flex flex-col items-center">
               <span className={`inline-flex items-center px-4 py-2 rounded-full ${
                 orderStatus === "COMPLETED" ? "bg-green-100 text-green-800" : 
                 orderStatus === "PENDING" ? "bg-yellow-100 text-yellow-800" : 
@@ -184,7 +182,7 @@ const OrderDetails = () => {
                           className="w-20 h-20 object-cover rounded-md"
                         />
                         <div className="flex-1">
-                          <h3 className="font-medium text-gray-800">{product.productId.name}</h3>
+                          <Link to={`/product/${product.productId._id}`}><h3 className="font-medium text-gray-800">{product.productId.name}</h3></Link>
                           <p className="text-sm text-gray-600 mt-1">{product.productId.description}</p>
                           <div className="mt-2 flex flex-wrap gap-4">
                             <span className="text-sm text-gray-600">Size: {product.size}</span>
@@ -196,7 +194,7 @@ const OrderDetails = () => {
                     ))}
                   </div>
                 ) : (
-                  <div className="space-y-4">
+                  <div>
                     {renderPaymentDetails(paymentDetails)}
                   </div>
                 )}

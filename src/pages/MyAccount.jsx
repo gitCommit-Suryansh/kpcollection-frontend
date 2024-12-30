@@ -35,7 +35,6 @@ const MyAccount = () => {
     }
     userDetails();
   }, [])
-  console.log(user)
   
   if (!user)
     return (

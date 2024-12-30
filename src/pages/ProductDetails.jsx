@@ -37,8 +37,22 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id]);
 
-  const addToWishlist = () => {
-    // Implement wishlist functionality
+  const addToWishlist = async() => {
+    try{
+      const response=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/wishlist/addtowishlist/${id}`,
+        {userId}
+      )
+      if(response.status===200){
+        setMessage("Product added to wishlist")
+      }
+      else{
+        setMessage("Error Adding product To Wishlist")
+      }
+    }
+    catch(error){
+      setMessage("Error Adding Item To Cart");
+
+    }
   };
 
   const addToCart = async () => {
@@ -81,9 +95,9 @@ const ProductDetails = () => {
       <div className="max-w-7xl mx-auto px-4 py-20">
         {message && (
           <div
-            className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-3 z-50 
+            className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-[0.65rem] z-50 
           ${
-            message === "Product added to cart" ? "bg-green-500" : "bg-red-500"
+            [message === "Product added to cart", message === "Product added to wishlist"] ? "bg-green-500" : "bg-red-500"
           } 
           text-white rounded-lg shadow-lg`}
           >

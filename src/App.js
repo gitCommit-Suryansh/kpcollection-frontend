@@ -10,6 +10,7 @@ import ProtectedRouteOwners from './utils/ProtectedRouteOwners';
 import OwnerLogin from './features/auth/OwnerLogin';
 import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
+import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
 import OrderConfirmed from './pages/OrderConfirmed';
 import MyAccount from './pages/MyAccount';
@@ -33,6 +34,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/Shop' element={<ProtectedRoute element={<Shop/>} />}/>
         <Route path='/cart' element={<ProtectedRoute element={<Cart/>} />} />
+        <Route path='/wishlist' element={<ProtectedRoute element={<Wishlist/>} />} />
         <Route path='/myaccount' element={<ProtectedRoute element={<MyAccount/>} />} />
         <Route path='/myaccount/myorders' element={<ProtectedRoute element={<MyOrders/>} />} />
         <Route path='/myaccount/myorders/:id' element={<ProtectedRoute element={<OrderDetails/>} />} />
