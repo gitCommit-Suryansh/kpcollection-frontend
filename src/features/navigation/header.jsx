@@ -41,7 +41,7 @@ const Header = () => {  // Change 'header' to 'Header'
             
             <div className="flex items-center space-x-4">
               <Link to="/myaccount"><User className="w-5 h-5" /></Link>
-              <Link to="/"><Search className="w-5 h-5" /></Link>
+              {/* <Link to="/"><Search className="w-5 h-5" /></Link> */}
               <Link to="/wishlist"><Heart className="w-5 h-5" /></Link>
               <Link to="/cart"><ShoppingCart className="w-5 h-5" /></Link>
               <Link to="/login"><LogOut className="w-5 h-5" /></Link>

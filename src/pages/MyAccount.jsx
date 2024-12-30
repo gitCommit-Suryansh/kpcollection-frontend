@@ -78,16 +78,13 @@ const MyAccount = () => {
                   </Link>
                 </li>
                 <li>
-                  <Link to="/my-wishlist" className="flex items-center p-3 rounded-xl hover:bg-gray-50 group transition-all duration-300">
+                  <Link to="/wishlist" className="flex items-center p-3 rounded-xl hover:bg-gray-50 group transition-all duration-300">
                     <Heart className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
                     <span className="ml-3 text-gray-600 group-hover:text-gray-900">Wishlist</span>
                   </Link>
                 </li>
                 <li>
-                  <Link to="/my-addresses" className="flex items-center p-3 rounded-xl hover:bg-gray-50 group transition-all duration-300">
-                    <MapPin className="w-5 h-5 text-gray-400 group-hover:text-blue-500 transition-colors" />
-                    <span className="ml-3 text-gray-600 group-hover:text-gray-900">Addresses</span>
-                  </Link>
+                  
                 </li>
               </ul>
             </nav>
