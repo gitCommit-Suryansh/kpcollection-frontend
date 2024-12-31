@@ -12,7 +12,6 @@ import ProductDetails from './pages/ProductDetails';
 import Cart from './pages/Cart';
 import Wishlist from './pages/Wishlist';
 import Checkout from './pages/Checkout';
-import OrderConfirmed from './pages/OrderConfirmed';
 import MyAccount from './pages/MyAccount';
 import MyOrders from './features/MyAccountPages/MyOrders';
 import MyProfile from './features/MyAccountPages/MyProfile';
@@ -21,6 +20,7 @@ import Collection from './features/Collection/Collection';
 import Success from './features/payment/Success';
 import Failure from './features/payment/Failure';
 import { Buffer } from 'buffer';
+import Accessories from './pages/Accessories';
 
 
 function App() {
@@ -34,6 +34,7 @@ function App() {
         <Route path='/login' element={<Login/>}/>
         <Route path='/Shop' element={<ProtectedRoute element={<Shop/>} />}/>
         <Route path='/cart' element={<ProtectedRoute element={<Cart/>} />} />
+        <Route path='/accessories' element={<Accessories/>} />
         <Route path='/wishlist' element={<ProtectedRoute element={<Wishlist/>} />} />
         <Route path='/myaccount' element={<ProtectedRoute element={<MyAccount/>} />} />
         <Route path='/myaccount/myorders' element={<ProtectedRoute element={<MyOrders/>} />} />
@@ -44,7 +45,6 @@ function App() {
         <Route path='/admin-login' element={<OwnerLogin/>}/>
         <Route path='/product/:id' element={<ProductDetails />} />
         <Route path='/checkout' element={<ProtectedRoute element={<Checkout/>} />} />
-        <Route path='/orderconfirmed' element={<OrderConfirmed/>} />
         <Route path='/collection/:category' element={<Collection/>}/>
         <Route path='/payment/success' element={<Success/>} />
         <Route path='/payment/failure' element={<Failure/>} />

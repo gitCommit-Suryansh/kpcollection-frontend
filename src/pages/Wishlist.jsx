@@ -11,7 +11,7 @@ const Wishlist = () => {
   const userId = decoded.id;
   const [wishlist, setWishlist] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [message, setMessage] = useState("");
+
 
   useEffect(() => {
     const fetchWishlist = async () => {

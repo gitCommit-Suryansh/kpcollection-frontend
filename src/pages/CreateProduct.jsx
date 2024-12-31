@@ -3,72 +3,58 @@ import axios from "axios";
 import Cookies from 'js-cookie';
 import decodeToken from '../utils/decodeToken'
 
-
 const CreateProduct = () => {
-
-  const [decoded, setDecoded] = useState(null); // Move useState outside of useEffect
+  const [decoded, setDecoded] = useState(null);
 
   useEffect(() => {
-    const token = Cookies.get("token"); // Get the token from cookies
+    const token = Cookies.get("token");
     if (token) {
-      const decodedToken = decodeToken(token); // Decode the token
-      setDecoded(decodedToken); // Store decoded token in state
+      const decodedToken = decodeToken(token);
+      setDecoded(decodedToken);
     }
-  }, []); // Dependency array to run effect only once
+  }, []);
 
-  // Define refs to access form inputs directly
   const nameRef = useRef();
   const descriptionRef = useRef();
   const priceRef = useRef();
   const discountRef = useRef();
   const imageRef = useRef();
   
-  // State to manage error or success messages
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
-
-  // State to manage selected sizes
   const [selectedSizes, setSelectedSizes] = useState([]);
-
-  // State for selected category
   const [selectedCategory, setSelectedCategory] = useState("");
-
-  // State for size options
   const [sizeOptions, setSizeOptions] = useState([]);
 
-  // Handle size checkbox change
   const handleSizeChange = (size) => {
     setSelectedSizes((prevSizes) => {
       if (prevSizes.includes(size)) {
-        return prevSizes.filter((s) => s !== size); // Remove size if already selected
+        return prevSizes.filter((s) => s !== size);
       } else {
-        return [...prevSizes, size]; // Add size if not selected
+        return [...prevSizes, size];
       }
     });
   };
 
-  // Handle form submission
   const handleSubmit = async (e) => {
     e.preventDefault();
   
-    const formData = new FormData(); // FormData to handle file and other inputs
+    const formData = new FormData();
     formData.append("name", nameRef.current.value);
     formData.append("description", descriptionRef.current.value);
     formData.append("price", priceRef.current.value);
     formData.append("discount", discountRef.current.value);
     formData.append("owner", decoded.id);
-    formData.append("category", selectedCategory); // Append selected category
-    selectedSizes.forEach(size => formData.append("sizes", size)); // Append selected sizes
+    formData.append("category", selectedCategory);
+    selectedSizes.forEach(size => formData.append("sizes", size));
   
-    // Append all selected images to FormData
     if (imageRef.current.files.length > 0) {
       for (let i = 0; i < imageRef.current.files.length; i++) {
-        formData.append("images", imageRef.current.files[i]); // Append each file
+        formData.append("images", imageRef.current.files[i]);
       }
     }
   
     try {
-      // Send a POST request to your backend
       const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/owner/createproduct`, formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
@@ -83,13 +69,12 @@ const CreateProduct = () => {
   };
 
   useEffect(() => {
-    // Update size options based on selected category
     if (selectedCategory === "Shirt" || selectedCategory === "T-Shirts") {
       setSizeOptions(['S', 'M', 'L', 'XL', 'XXL']);
     } else if (selectedCategory === "Jeans" || selectedCategory === "Lower") {
       setSizeOptions(['26', '28', '30', '32', '34', '36']);
     } else {
-      setSizeOptions([]); // Reset if no valid category is selected
+      setSizeOptions([]);
     }
   }, [selectedCategory]);
 

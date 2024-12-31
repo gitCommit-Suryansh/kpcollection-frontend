@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from 'js-cookie';
@@ -20,8 +20,11 @@ const Signup = ({ error }) => {
   const postalCodeRef = useRef();
   const mobileNumberRef = useRef();
 
+  const [loading, setLoading] = useState(false);
+
   const handlesubmit = async (e) => {
     e.preventDefault();
+    setLoading(true);
     const formdata = {
       name: nameRef.current.value,
       email: emailRef.current.value,
@@ -42,6 +45,8 @@ const Signup = ({ error }) => {
       }
     } catch (err) {
       console.log(err);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -164,6 +169,11 @@ const Signup = ({ error }) => {
         </div>
       </div>
     </div>
+    {loading && (
+      <div className="fixed inset-0 flex items-center justify-center bg-gray-500 bg-opacity-50 z-50">
+        <div className="loader">Loading...</div>
+      </div>
+    )}
     </>
   );
 };

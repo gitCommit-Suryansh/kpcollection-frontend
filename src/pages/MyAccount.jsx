@@ -39,9 +39,9 @@ const MyAccount = () => {
   if (!user)
     return (
       <div className="min-h-screen flex items-center justify-center flex-col gap-3">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-500"></div>
-      <div className="animate-pulse text-blue-500 pl-3">Loading...</div>
-    </div>
+            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-zinc-500"></div>
+            <div className="animate-pulse text-zinc-500 pl-3">Loading...</div>
+          </div>
     );
 
   return (

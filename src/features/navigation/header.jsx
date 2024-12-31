@@ -35,8 +35,8 @@ const Header = () => {  // Change 'header' to 'Header'
             <div className="hidden lg:flex items-center space-x-8 flex-1 justify-center">
               <Link to="/shop" className="text-sm hover:text-gray-600">HOME</Link>
               <Link to="/" className="text-sm hover:text-gray-600">CLOTHING</Link>
-              <Link to="/" className="text-sm hover:text-gray-600">ACCESSORIES</Link>
-              <Link to="/" className="text-sm hover:text-gray-600">SALE</Link>
+              <Link to="/accessories" className="text-sm hover:text-gray-600">ACCESSORIES</Link>
+              {/* <Link to="/" className="text-sm hover:text-gray-600">SALE</Link> */}
             </div>
             
             <div className="flex items-center space-x-4">
@@ -57,8 +57,8 @@ const Header = () => {  // Change 'header' to 'Header'
           <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 p-4 mt-16">
             <Link to="/shop"><h2 className="text-lg font-semibold mb-4">HOME</h2></Link>
             <h2 className="text-lg font-semibold mb-4">CLOTHING</h2>
-            <h2 className="text-lg font-semibold mb-4">ACCESSORIES</h2>
-            <h2 className="text-lg font-semibold mb-4">SALE</h2>
+            <Link to="/accessories"><h2 className="text-lg font-semibold mb-4">ACCESSORIES</h2></Link>
+            {/* <h2 className="text-lg font-semibold mb-4">SALE</h2> */}
             <h2 className="text-lg font-semibold mb-4">SHOP BY CATEGORY</h2>
             <ul>
              

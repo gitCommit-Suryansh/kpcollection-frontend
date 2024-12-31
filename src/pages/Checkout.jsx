@@ -87,6 +87,9 @@ const Checkout = () => {
           if (response.data.order.paymentDetails.code === "PAYMENT_SUCCESS") {
             navigate("/payment/success", { state: { orderId: response.data.order._id } });
           }
+          if (response.data.order.paymentDetails.code !== "PAYMENT_SUCCESS") {
+            navigate("/payment/failure", { state: { orderId: response.data.order._id } });
+          }
           
         } catch (error) {
           console.error("Error creating order:", error);
