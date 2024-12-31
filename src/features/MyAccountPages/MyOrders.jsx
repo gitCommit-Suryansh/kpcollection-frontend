@@ -105,7 +105,7 @@ const MyOrders = () => {
                     </div>
                     <div
                       className={`px-4 py-1.5 rounded-full text-sm ${
-                        order.paymentDetails.success
+                        order.paymentDetails.message==="Your payment is successful."
                           ? 'bg-emerald-50 text-emerald-700'
                           : 'bg-red-50 text-red-700'
                       }`}

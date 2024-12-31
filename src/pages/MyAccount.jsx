@@ -54,7 +54,13 @@ const MyAccount = () => {
             <div className="text-center">
               <div className="relative inline-block">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
-                  <span className="text-white text-4xl font-bold">{user.name.charAt(0).toUpperCase()}</span>
+                  {user.profile ? (
+                    <img src={`data:image/jpg;base64,${Buffer.from(user.profile.data).toString("base64")}`} alt="User Profile" className="w-24 h-24 rounded-full" />
+                  ) : (
+                    <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
+                      <p className="text-white text-4xl">{user.name[0].toUpperCase()}</p>
+                    </div>
+                  )}
                 </div>
                 <span className="absolute bottom-2 right-0 w-4 h-4 bg-green-400 border-2 border-white rounded-full"></span>
               </div>
@@ -127,24 +133,18 @@ const MyAccount = () => {
             <div className="col-span-1 md:col-span-2 bg-white rounded-2xl shadow-lg p-6">
               <h3 className="text-lg font-bold mb-4">Recent Activity</h3>
               <div className="space-y-4">
-                <div className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors">
-                  <div className="bg-green-100 p-2 rounded-lg">
-                    <ShoppingCart className="w-5 h-5 text-green-600" />
+                
+                <Link to="/wishlist">
+                  <div className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors">
+                    <div className="bg-blue-100 p-2 rounded-lg">
+                      <Heart className="w-5 h-5 text-blue-600" />
+                    </div>
+                    <div className="ml-4">
+                      <p className="text-sm font-medium">Added item to wishlist</p>
+                      <p className="text-xs text-gray-500">Yesterday</p>
+                    </div>
                   </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium">Order #1234 delivered</p>
-                    <p className="text-xs text-gray-500">2 hours ago</p>
-                  </div>
-                </div>
-                <div className="flex items-center p-3 rounded-xl hover:bg-gray-50 transition-colors">
-                  <div className="bg-blue-100 p-2 rounded-lg">
-                    <Heart className="w-5 h-5 text-blue-600" />
-                  </div>
-                  <div className="ml-4">
-                    <p className="text-sm font-medium">Added item to wishlist</p>
-                    <p className="text-xs text-gray-500">Yesterday</p>
-                  </div>
-                </div>
+                </Link>
               </div>
             </div>
           </div>

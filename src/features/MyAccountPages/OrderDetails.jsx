@@ -112,7 +112,7 @@ const OrderDetails = () => {
   );
 
   const { paymentDetails, productDetails, userDetails, createdAt } = orderDetails;
-  const orderStatus = paymentDetails.data.state;
+  const orderStatus = orderDetails.orderStatus;
 
   return (
     <div className="min-h-screen bg-gray-50">
@@ -129,9 +129,12 @@ const OrderDetails = () => {
               </p>
             </div>
             <div className="mt-4 md:mt-0 flex flex-col items-center">
-              <span className={`inline-flex items-center px-4 py-2 rounded-full ${
-                orderStatus === "COMPLETED" ? "bg-green-100 text-green-800" : 
-                orderStatus === "PENDING" ? "bg-yellow-100 text-yellow-800" : 
+              <span className={`inline-flex items-center px-4 py-2 rounded-full 
+               ${
+                orderStatus === "Processing" ? "bg-yellow-400 text-black" : 
+                orderStatus === "Shipped" ? "bg-blue-400 text-white" : 
+                orderStatus === "Completed" ? "bg-green-500 text-white" : 
+                orderStatus === "FAILED" ? "bg-red-600 text-white" : 
                 "bg-gray-100 text-gray-800"
               }`}>
                 {orderStatus}
