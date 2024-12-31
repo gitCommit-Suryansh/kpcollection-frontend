@@ -67,7 +67,7 @@ const MyOrders = () => {
         <div className="flex justify-between items-center mb-12">
           <h1 className="text-4xl font-light">Orders</h1>
           <Link 
-            to="/shop"
+            to="/"
             className="text-blue-600 hover:text-blue-800 transition flex items-center gap-2"
           >
             Continue Shopping
@@ -80,7 +80,7 @@ const MyOrders = () => {
             <Package className="w-16 h-16 mx-auto text-gray-300 mb-4" />
             <h2 className="text-2xl font-light text-gray-600 mb-4">No orders yet</h2>
             <Link 
-              to="/shop"
+              to="/"
               className="inline-block px-8 py-3 border border-blue-600 text-blue-600 hover:bg-blue-600 hover:text-white transition rounded-full"
             >
               Start Shopping

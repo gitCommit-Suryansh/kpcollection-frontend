@@ -41,7 +41,7 @@ const Login = () => {
         document.cookie = `token=${token}; path=/; max-age=36000; secure; samesite=None`;
         setSuccess("Logged in successfully");
         console.log("Success message set:", "Logged in successfully"); // Debugging log
-        navigate("/Shop");
+        navigate("/");
       } else {
         setSuccess("Incorrect credentials");
         console.log("Success message set:", "Incorrect credentials"); // Debugging log
@@ -122,7 +122,7 @@ const Login = () => {
             </button>
           </form>
           <div className="mt-5 text-center">
-            <Link to="/">
+            <Link to="/signup">
               <button className="px-5 rounded-full py-2 mt-2 bg-gray-500 text-white hover:bg-gray-600 transition duration-300">
                 Create New Account
               </button>

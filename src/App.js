@@ -30,9 +30,9 @@ function App() {
     
     <Router>
       <Routes>
-        <Route path='/' element={<Signup/>}/>
+        <Route path='/' element={<Shop/>} />
+        <Route path='/signup' element={<Signup/>}/>
         <Route path='/login' element={<Login/>}/>
-        <Route path='/Shop' element={<ProtectedRoute element={<Shop/>} />}/>
         <Route path='/cart' element={<ProtectedRoute element={<Cart/>} />} />
         <Route path='/accessories' element={<Accessories/>} />
         <Route path='/wishlist' element={<ProtectedRoute element={<Wishlist/>} />} />

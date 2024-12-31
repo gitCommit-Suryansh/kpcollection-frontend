@@ -15,23 +15,34 @@ const Cart = () => {
   const [totalDiscount, setTotalDiscount] = useState(0);
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchCart = async () => {
+      setLoading(true);
       const response = await axios.get(
         `${process.env.REACT_APP_BACKEND_URL}/cart/getcart/${userId}`
       );
       setUser(response.data.user);
+      setLoading(false);
     };
     fetchCart();
   }, [userId]);
 
   useEffect(() => {
     if (user && user.cart) {
-      const discount = user.cart.reduce((acc, item) => acc + item.product.discount * item.quantity, 0);
+      const discount = user.cart.reduce(
+        (acc, item) => acc + item.product.discount * item.quantity,
+        0
+      );
       setTotalDiscount(discount);
       const amount =
-        user.cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0) - discount + 20;
+        user.cart.reduce(
+          (acc, item) => acc + item.product.price * item.quantity,
+          0
+        ) -
+        discount +
+        20;
       setTotalAmount(amount);
     }
   }, [user]);
@@ -45,8 +56,9 @@ const Cart = () => {
       if (response.status === 200) {
         setMessage("Product removed from cart");
         setUser((prevUser) => {
-          const updatedCart = prevUser.cart.filter((item) => item.productId !== itemId);
-          console.log("Updated Cart:", updatedCart);
+          const updatedCart = prevUser.cart.filter(
+            (item) => item.productId !== itemId
+          );
           return {
             ...prevUser,
             cart: updatedCart,
@@ -60,7 +72,7 @@ const Cart = () => {
   };
 
   const handleCheckout = () => {
-    navigate('/checkout', { state: { totalAmount: totalAmount } });
+    navigate("/checkout", { state: { totalAmount: totalAmount } });
   };
 
   return (
@@ -69,8 +81,9 @@ const Cart = () => {
       <div className="min-h-screen bg-white pt-20">
         {/* Notification Message */}
         {message && (
-          <div className="fixed top-4 left-1/2 transform -translate-x-1/2 p-3 z-50 
-            bg-black text-white rounded-lg shadow-lg">
+          <div
+            className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-[0.65rem] z-50 mt-16 bg-green-500 text-white rounded-lg shadow-lg backdrop-blur-md bg-opacity-90`}
+          >
             {message}
           </div>
         )}
@@ -78,11 +91,16 @@ const Cart = () => {
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className="text-2xl font-medium mb-8">Shopping Cart</h1>
 
-          {!user || !user.cart || user.cart.length === 0 ? (
+          {loading ? (
+            <div className="min-h-screen flex items-center flex-col gap-3 mt-[10%]">
+              <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-zinc-500"></div>
+              <div className="animate-pulse text-zinc-500 pl-3">Loading...</div>
+            </div>
+          ) : !user || !user.cart || user.cart.length === 0 ? (
             <div className="text-center py-16">
               <p className="text-gray-600 mb-6">Your cart is empty</p>
-              <Link 
-                to="/shop" 
+              <Link
+                to="/"
                 className="inline-block border border-black px-8 py-3 text-sm hover:bg-black hover:text-white transition-colors"
               >
                 CONTINUE SHOPPING
@@ -93,7 +111,7 @@ const Cart = () => {
               {/* Cart Items */}
               <div className="col-span-8">
                 {user.cart.map((item, index) => (
-                  <div 
+                  <div
                     key={item.productId}
                     className="flex gap-6 py-6 border-b"
                   >
@@ -101,7 +119,9 @@ const Cart = () => {
                     <div className="w-32 aspect-[3/4]">
                       <Link to={`/product/${item.product._id}`}>
                         <img
-                          src={`data:image/jpg;base64,${Buffer.from(item.product.images[0].data).toString("base64")}`}
+                          src={`data:image/jpg;base64,${Buffer.from(
+                            item.product.images[0].data
+                          ).toString("base64")}`}
                           alt={item.product.name}
                           className="w-full h-full object-cover"
                         />
@@ -112,9 +132,11 @@ const Cart = () => {
                     <div className="flex-1">
                       <div className="flex justify-between mb-4">
                         <Link to={`/product/${item.product._id}`}>
-                          <h3 className="font-medium">{item.product.name.toUpperCase()}</h3>
+                          <h3 className="font-medium">
+                            {item.product.name.toUpperCase()}
+                          </h3>
                         </Link>
-                        <button 
+                        <button
                           onClick={() => removeFromCart(item.product._id)}
                           className="text-gray-400 hover:text-black"
                         >
@@ -124,21 +146,26 @@ const Cart = () => {
 
                       <div className="space-y-2 text-sm">
                         <div className="flex items-center gap-2">
-                          <span>Price: INR {item.product.price} x {item.quantity}</span>
+                          <span>
+                            Price: INR {item.product.price} x {item.quantity}
+                          </span>
                           {item.product.discount > 0 && (
                             <span className="text-xs bg-black text-white px-2 py-0.5 rounded">
-                              {Math.round((item.product.discount / item.product.price) * 100)}% OFF
+                              {Math.round(
+                                (item.product.discount / item.product.price) *
+                                  100
+                              )}
+                              % OFF
                             </span>
                           )}
                         </div>
                         {item.product.discount > 0 && (
                           <p className="text-gray-600">
-                            Discount: INR {item.product.discount * item.quantity}
+                            Discount: INR{" "}
+                            {item.product.discount * item.quantity}
                           </p>
                         )}
-                        <p className="text-gray-600">
-                          Size: {item.size}
-                        </p>
+                        <p className="text-gray-600">Size: {item.size}</p>
                         <p className="text-gray-600">
                           Quantity: {item.quantity}
                         </p>
@@ -152,11 +179,18 @@ const Cart = () => {
               <div className="col-span-8 md:col-span-4">
                 <div className="bg-gray-50 p-6 rounded-lg">
                   <h2 className="text-lg font-medium mb-6">Order Summary</h2>
-                  
+
                   <div className="space-y-4 text-sm">
                     <div className="flex justify-between">
                       <span>Order Total</span>
-                      <span>INR {user.cart.reduce((acc, item) => acc + (item.product.price * item.quantity), 0)}</span>
+                      <span>
+                        INR{" "}
+                        {user.cart.reduce(
+                          (acc, item) =>
+                            acc + item.product.price * item.quantity,
+                          0
+                        )}
+                      </span>
                     </div>
                     <div className="flex justify-between">
                       <span>Discount</span>
@@ -170,7 +204,7 @@ const Cart = () => {
                       <span>Shipping</span>
                       <span>FREE</span>
                     </div>
-                    
+
                     <div className="border-t pt-4 mt-4">
                       <div className="flex justify-between font-medium text-base">
                         <span>Total Amount</span>

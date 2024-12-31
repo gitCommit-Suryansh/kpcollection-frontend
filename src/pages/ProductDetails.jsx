@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import Cookies from "js-cookie";
 import decodeToken from "../utils/decodeToken";
@@ -7,6 +7,7 @@ import Header from "../features/navigation/header";
 import { Link } from "react-router-dom";
 
 const ProductDetails = () => {
+  const navigate = useNavigate();
   const { id } = useParams();
   const [productDets, setProductDets] = useState();
   const [selectedImage, setSelectedImage] = useState(0);
@@ -18,7 +19,9 @@ const ProductDetails = () => {
 
   const token = Cookies.get("token");
   const decodedToken = decodeToken(token);
-  const userId = decodedToken.id;
+  if(decodedToken){
+    var userId = decodedToken.id;
+  }
 
   useEffect(() => {
     const fetchProductDetails = async () => {
@@ -37,30 +40,39 @@ const ProductDetails = () => {
     fetchProductDetails();
   }, [id]);
 
-  const addToWishlist = async() => {
-    try{
-      const response=await axios.post(`${process.env.REACT_APP_BACKEND_URL}/wishlist/addtowishlist/${id}`,
-        {userId}
-      )
-      if(response.status===200){
-        setMessage("Product added to wishlist")
-      }
-      else{
-        setMessage("Error Adding product To Wishlist")
-      }
+  const addToWishlist = async () => {
+    if (!token) {
+      navigate("/login");
+      return;
     }
-    catch(error){
+    try {
+      const response = await axios.post(
+        `${process.env.REACT_APP_BACKEND_URL}/wishlist/addtowishlist/${id}`,
+        { userId }
+      );
+      if (response.status === 200) {
+        setMessage("Product added to wishlist");
+        setTimeout(() => setMessage(""), 3000);
+      } else {
+        setMessage("Error Adding product To Wishlist");
+        setTimeout(() => setMessage(""), 3000);
+      }
+    } catch (error) {
       setMessage("Error Adding Item To Cart");
-
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
   const addToCart = async () => {
-    if (!selectedSize) {
-      setMessage("Please select a size.");
+    if (!token) {
+      navigate("/login");
       return;
     }
-    console.log(userId,selectedSize,quantity)
+    if (!selectedSize) {
+      setMessage("Please select a size.");
+      setTimeout(() => setMessage(""), 3000);
+      return;
+    }
 
     try {
       const response = await axios.post(
@@ -72,8 +84,10 @@ const ProductDetails = () => {
           ? "Product added to cart"
           : "Error Adding Item To Cart"
       );
+      setTimeout(() => setMessage(""), 3000);
     } catch (error) {
       setMessage("Error Adding Item To Cart");
+      setTimeout(() => setMessage(""), 3000);
     }
   };
 
@@ -95,11 +109,12 @@ const ProductDetails = () => {
       <div className="max-w-7xl mx-auto px-4 py-20">
         {message && (
           <div
-            className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-[0.65rem] z-50 
-          ${
-            [message === "Product added to cart", message === "Product added to wishlist"] ? "bg-green-500" : "bg-red-500"
-          } 
-          text-white rounded-lg shadow-lg`}
+            className={`fixed top-4 left-1/2 transform -translate-x-1/2 p-[0.65rem] z-50 mt-16
+            ${[message === "Product added to cart", message === "Product added to wishlist", message === "Please select a size"].includes(true) 
+                ? "bg-green-500" 
+                : "bg-red-500"
+            } 
+            text-white rounded-lg shadow-lg backdrop-blur-md bg-opacity-90`}
           >
             {message}
           </div>

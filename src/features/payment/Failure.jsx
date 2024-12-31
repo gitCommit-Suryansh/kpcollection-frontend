@@ -50,7 +50,7 @@ const Failure = () => {
                             View Order
                         </Link>
                         <Link 
-                            to="/shop"
+                            to="/"
                             className="flex-1 border border-gray-300 hover:bg-gray-50 text-gray-700 px-4 py-2 rounded-lg transition-colors duration-200"
                         >
                             Continue Shopping

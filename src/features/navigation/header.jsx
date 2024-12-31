@@ -1,19 +1,23 @@
 import React, { useState } from 'react';
 import logo from '../../assets/images/favicon.png'
-import IsLoggedIn from '../../utils/IsLoggedIn';
+import Cookies from "js-cookie";
+import decodeToken from "../../utils/decodeToken";
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Heart, Search, User, LogOut } from "lucide-react";
+import { ShoppingCart, Heart, Search, User, LogOut,LogIn } from "lucide-react";
 
 
 const Header = () => {  // Change 'header' to 'Header'
   const [menuOpen, setMenuOpen] = useState(false);
 
+  const token = Cookies.get("token");
+  const decodedToken = decodeToken(token);
+  if(decodedToken){
+    var userId = decodedToken.id;
+  }
+
   const toggleMenu = () => {
     setMenuOpen(prev => !prev);
   };
-  
-
-  const loggedin = IsLoggedIn(); // Assuming this is a placeholder for actual login logic
 
   return (
     <>
@@ -29,22 +33,26 @@ const Header = () => {  // Change 'header' to 'Header'
             
             <div className="text-center flex-1 lg:flex-none justify-center items-center flex">
               <img src={logo} alt="KP Collection Logo" className="h-8 inline-block" />
-              <Link to="/shop" className={`${window.innerWidth>=1024?"text-2xl":''} font-bold`}>KP-COLLECTION</Link>
+              <Link to="/" className={`${window.innerWidth>=1024?"text-2xl":''} font-bold`}>KP-COLLECTION</Link>
             </div>
             
             <div className="hidden lg:flex items-center space-x-8 flex-1 justify-center">
-              <Link to="/shop" className="text-sm hover:text-gray-600">HOME</Link>
+              <Link to="/" className="text-sm hover:text-gray-600">HOME</Link>
               <Link to="/" className="text-sm hover:text-gray-600">CLOTHING</Link>
               <Link to="/accessories" className="text-sm hover:text-gray-600">ACCESSORIES</Link>
-              {/* <Link to="/" className="text-sm hover:text-gray-600">SALE</Link> */}
             </div>
             
             <div className="flex items-center space-x-4">
-              <Link to="/myaccount"><User className="w-5 h-5" /></Link>
-              {/* <Link to="/"><Search className="w-5 h-5" /></Link> */}
-              <Link to="/wishlist"><Heart className="w-5 h-5" /></Link>
-              <Link to="/cart"><ShoppingCart className="w-5 h-5" /></Link>
-              <Link to="/login"><LogOut className="w-5 h-5" /></Link>
+              {decodedToken ? (
+                <>
+                  <Link to="/myaccount"><User className="w-5 h-5" /></Link>
+                  <Link to="/wishlist"><Heart className="w-5 h-5" /></Link>
+                  <Link to="/cart"><ShoppingCart className="w-5 h-5" /></Link>
+                  <Link to="/logout"><LogOut className="w-5 h-5" /></Link>
+                </>
+              ) : (
+                <Link to="/login"><LogIn className="w-5 h-5" /></Link>
+              )}
             </div>
           </div>
         </div>
@@ -55,10 +63,10 @@ const Header = () => {  // Change 'header' to 'Header'
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40" onClick={toggleMenu}>
           
           <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 p-4 mt-16">
-            <Link to="/shop"><h2 className="text-lg font-semibold mb-4">HOME</h2></Link>
+            <Link to="/"><h2 className="text-lg font-semibold mb-4">HOME</h2></Link>
             <h2 className="text-lg font-semibold mb-4">CLOTHING</h2>
             <Link to="/accessories"><h2 className="text-lg font-semibold mb-4">ACCESSORIES</h2></Link>
-            {/* <h2 className="text-lg font-semibold mb-4">SALE</h2> */}
+          
             <h2 className="text-lg font-semibold mb-4">SHOP BY CATEGORY</h2>
             <ul>
              

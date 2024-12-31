@@ -40,7 +40,7 @@ const Wishlist = () => {
             <div className="text-center py-16">
               <p className="text-gray-600 mb-6">Your wishlist is empty</p>
               <Link 
-                to="/shop" 
+                to="/" 
                 className="inline-block border border-black px-8 py-3 text-sm hover:bg-black hover:text-white transition-colors"
               >
                 CONTINUE SHOPPING
