@@ -215,12 +215,7 @@ const ProductDetails = () => {
                 <span className="text-gray-600">
                   Get this for INR {productDets.price - productDets.discount}
                 </span>
-                <div className="flex items-center gap-2">
-                  <span className="text-xs">
-                    Flat 10% Off on your first app purchase.
-                  </span>
-                  <span className="text-xs text-gray-500">Code: APP10</span>
-                </div>
+                
               </div>
             </div>
 

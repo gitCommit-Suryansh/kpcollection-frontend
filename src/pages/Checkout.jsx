@@ -169,9 +169,7 @@ const Checkout = () => {
                   <h2 className="text-xl font-semibold text-zinc-800">
                     Delivery Address
                   </h2>
-                  <button className="text-zinc-900 text-sm hover:underline">
-                    Change
-                  </button>
+                  
                 </div>
                 <div className="space-y-2 text-zinc-600">
                   <p className="font-medium text-zinc-900">{user.name}</p>
@@ -181,9 +179,7 @@ const Checkout = () => {
                     {user.address.state} {user.address.postalCode}
                   </p>
                 </div>
-                <button className="text-zinc-900 text-sm mt-4 hover:underline">
-                  Add delivery instructions
-                </button>
+                
               </div>
             </div>
           </div>
