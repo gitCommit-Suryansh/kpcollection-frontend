@@ -48,7 +48,7 @@ const Header = () => {  // Change 'header' to 'Header'
                   <Link to="/myaccount"><User className="w-5 h-5" /></Link>
                   <Link to="/wishlist"><Heart className="w-5 h-5" /></Link>
                   <Link to="/cart"><ShoppingCart className="w-5 h-5" /></Link>
-                  <Link to="/logout"><LogOut className="w-5 h-5" /></Link>
+                  <Link to="/login"><LogOut className="w-5 h-5" /></Link>
                 </>
               ) : (
                 <Link to="/login"><LogIn className="w-5 h-5" /></Link>
