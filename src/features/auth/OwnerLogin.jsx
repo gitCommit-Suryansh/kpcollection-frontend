@@ -32,7 +32,7 @@ const OwnerLogin = () => {
         const { token } = response.data;
         document.cookie = `token=${token}; path=/; max-age=36000; secure; samesite=None`;
         setMessage("Logged in Succesfully")
-        navigate("/createproduct");
+        navigate("/AdminHome");
       }
     } catch (err) {
       console.log(err);

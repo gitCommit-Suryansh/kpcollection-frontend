@@ -6,6 +6,7 @@ import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import Shop from './pages/Shop';
 import ProtectedRoute from './utils/ProtectedRoute';
 import CreateProduct from './pages/CreateProduct';
+import AdminHome from './pages/AdminHome';
 import ProtectedRouteOwners from './utils/ProtectedRouteOwners';
 import OwnerLogin from './features/auth/OwnerLogin';
 import ProductDetails from './pages/ProductDetails';
@@ -21,6 +22,7 @@ import Success from './features/payment/Success';
 import Failure from './features/payment/Failure';
 import { Buffer } from 'buffer';
 import Accessories from './pages/Accessories';
+import OrdersDashboard from './pages/OrdersDashboard';
 
 
 function App() {
@@ -30,6 +32,7 @@ function App() {
     
     <Router>
       <Routes>
+        {/* Users routes */}
         <Route path='/' element={<Shop/>} />
         <Route path='/signup' element={<Signup/>}/>
         <Route path='/login' element={<Login/>}/>
@@ -40,14 +43,17 @@ function App() {
         <Route path='/myaccount/myorders' element={<ProtectedRoute element={<MyOrders/>} />} />
         <Route path='/myaccount/myorders/:id' element={<ProtectedRoute element={<OrderDetails/>} />} />
         <Route path='/myaccount/myprofile' element={<ProtectedRoute element={<MyProfile/>} />} />
+        <Route path='/product/:id' element={<ProductDetails />} />
+        <Route path='/payment/success' element={<Success/>} />
+        <Route path='/collection/:category' element={<Collection/>}/>
+        <Route path='/payment/failure' element={<Failure/>} />
+        <Route path='/checkout' element={<ProtectedRoute element={<Checkout/>} />} />
+
+        <Route path='/AdminHome' element={<AdminHome/>}/>
         <Route path='/admin-signup' element={<OwnerSignup/>}/>
         <Route path='/createproduct' element={<ProtectedRouteOwners element={<CreateProduct/>} />} />
         <Route path='/admin-login' element={<OwnerLogin/>}/>
-        <Route path='/product/:id' element={<ProductDetails />} />
-        <Route path='/checkout' element={<ProtectedRoute element={<Checkout/>} />} />
-        <Route path='/collection/:category' element={<Collection/>}/>
-        <Route path='/payment/success' element={<Success/>} />
-        <Route path='/payment/failure' element={<Failure/>} />
+        <Route path='/OrdersDashboard' element={<OrdersDashboard/>}/>
       </Routes>
     </Router>
     </>
