@@ -23,7 +23,7 @@ import Failure from './features/payment/Failure';
 import { Buffer } from 'buffer';
 import Accessories from './pages/Accessories';
 import OrdersDashboard from './pages/OrdersDashboard';
-
+import AboutUs from './pages/AboutUs'
 
 function App() {
   window.Buffer = Buffer;
@@ -48,6 +48,7 @@ function App() {
         <Route path='/collection/:category' element={<Collection/>}/>
         <Route path='/payment/failure' element={<Failure/>} />
         <Route path='/checkout' element={<ProtectedRoute element={<Checkout/>} />} />
+        <Route path='/about-us' element={<AboutUs/>}/>
 
         <Route path='/AdminHome' element={<AdminHome/>}/>
         <Route path='/admin-signup' element={<OwnerSignup/>}/>

@@ -65,7 +65,7 @@ const Header = () => {  // Change 'header' to 'Header'
           <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 p-4 mt-16">
             <Link to="/"><h2 className="text-lg font-semibold mb-4">HOME</h2></Link>
             <h2 className="text-lg font-semibold mb-4">CLOTHING</h2>
-            <Link to="/accessories"><h2 className="text-lg font-semibold mb-4">ACCESSORIES</h2></Link>
+            {/* <Link to="/accessories"><h2 className="text-lg font-semibold mb-4">ACCESSORIES</h2></Link> */}
           
             <h2 className="text-lg font-semibold mb-4">SHOP BY CATEGORY</h2>
             <ul>
@@ -84,6 +84,9 @@ const Header = () => {  // Change 'header' to 'Header'
               </li>
               
             </ul>
+            <Link to="/about-us"><h2 className="text-lg font-semibold mb-4">ABOUT US</h2></Link>
+
+            
           </div>
         </div>
       )}
