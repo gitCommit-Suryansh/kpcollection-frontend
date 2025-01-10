@@ -5,9 +5,9 @@ import Cookies from 'js-cookie';
 
 
 const OwnerLogin = () => {
-  // useEffect(() => {
-  //   Cookies.remove("token");
-  // }, []);
+  useEffect(() => {
+    Cookies.remove("token");
+  }, []);
 
   let navigate = useNavigate();
   const emailRef = useRef();

@@ -3,17 +3,14 @@ import logo from '../../assets/images/favicon.png'
 import Cookies from "js-cookie";
 import decodeToken from "../../utils/decodeToken";
 import { Link } from 'react-router-dom';
-import { ShoppingCart, Heart, Search, User, LogOut,LogIn } from "lucide-react";
+import { ShoppingCart, Heart,User, LogOut,LogIn } from "lucide-react";
 
 
-const Header = () => {  // Change 'header' to 'Header'
+const Header = () => { 
   const [menuOpen, setMenuOpen] = useState(false);
 
   const token = Cookies.get("token");
   const decodedToken = decodeToken(token);
-  if(decodedToken){
-    var userId = decodedToken.id;
-  }
 
   const toggleMenu = () => {
     setMenuOpen(prev => !prev);

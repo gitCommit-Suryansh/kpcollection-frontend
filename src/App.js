@@ -3,6 +3,8 @@ import Signup from './features/auth/signup'
 import Login from './features/auth/login';
 import OwnerSignup from './features/auth/OwnerSignup';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import Lenis from '@studio-freight/lenis'
+
 import Shop from './pages/Shop';
 import ProtectedRoute from './utils/ProtectedRoute';
 import CreateProduct from './pages/CreateProduct';
@@ -24,9 +26,32 @@ import { Buffer } from 'buffer';
 import Accessories from './pages/Accessories';
 import OrdersDashboard from './pages/OrdersDashboard';
 import AboutUs from './pages/AboutUs'
+import { useEffect } from 'react';
 
 function App() {
   window.Buffer = Buffer;
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      direction: 'vertical',
+      gestureDirection: 'vertical',
+      smooth: true,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    })
+
+    function raf(time) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+
+    return () => {
+      lenis.destroy()
+    }
+  }, [])
   return (
     <>
     

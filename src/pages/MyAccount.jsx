@@ -5,7 +5,7 @@ import decodeToken from '../utils/decodeToken';
 import Cookies from "js-cookie";
 import axios from 'axios';
 import { useEffect,useState } from 'react';
-import { User, ShoppingCart, Heart, MapPin, Settings, Bell, ShoppingBag } from 'lucide-react';
+import { User, ShoppingCart, Heart,ShoppingBag } from 'lucide-react';
 
 const MyAccount = () => {
   const [user, setuser] = useState()

@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Header from "../features/navigation/header";
 import axios from "axios";
 import { Buffer } from "buffer";
-import { Link, useNavigate } from "react-router-dom";
+import { Link} from "react-router-dom";
 import Cookies from "js-cookie";
 import decodeToken from "../utils/decodeToken";
 import carousel1 from "../assets/images/carousel1.png";
@@ -12,8 +12,6 @@ const Shop = () => {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
-  const navigate = useNavigate();
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [fetchedProducts, setFetchedProducts] = useState([]);
   const images = [carousel1, carousel2];
@@ -109,14 +107,6 @@ const Shop = () => {
         />
       </div>
 
-      {/* Category Buttons */}
-
-      {/* Success Notification */}
-      {success && (
-        <div className="fixed top-5 right-5 bg-green-600 text-white px-6 py-3 rounded-md shadow-lg z-50">
-          {success}
-        </div>
-      )}
       <div className="text-center mt-4">
         <button className="px-4 py-2 text-white bg-black rounded-3xl">
           NEW DROPS

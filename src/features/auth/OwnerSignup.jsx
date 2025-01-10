@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef} from 'react';
 import axios from 'axios';
 
 const OwnerSignup = () => {
@@ -9,7 +9,6 @@ const OwnerSignup = () => {
   const businessNameRef = useRef();
   const gstinRef = useRef();
   const logoRef = useRef();
-  const [errorMessage, setErrorMessage] = useState('');
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -41,8 +40,6 @@ const OwnerSignup = () => {
     <div className="flex justify-center items-center h-[100vh] bg-gray-100">
       <div className="bg-white shadow-lg rounded-lg p-8 max-w-md w-full mt-[13rem] ">
         <h2 className="text-2xl font-bold mb-6 text-gray-800">Admin/Business Owner Signup</h2>
-
-        {errorMessage && <p className="text-red-500 text-sm mb-4">{errorMessage}</p>}
 
         <form onSubmit={handleSubmit} encType="multipart/form-data" method='post'>
           <div className="mb-4">

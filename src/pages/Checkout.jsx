@@ -22,7 +22,6 @@ const Checkout = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [totalAmount, setTotalAmount] = useState(0);
-  const [paidAmount, setPaidAmount] = useState(0);
   const [paymentDetails, setpaymentDetails] = useState();
   const [user, setUser] = useState(null);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
