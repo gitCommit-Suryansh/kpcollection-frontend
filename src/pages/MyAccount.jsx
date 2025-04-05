@@ -55,7 +55,7 @@ const MyAccount = () => {
               <div className="relative inline-block">
                 <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
                   {user.profile ? (
-                    <img src={`data:image/jpg;base64,${Buffer.from(user.profile.data).toString("base64")}`} alt="User Profile" className="w-24 h-24 rounded-full" />
+                    <img src={user.profile} alt="User Profile" className="w-24 h-24 rounded-full" />
                   ) : (
                     <div className="w-24 h-24 rounded-full bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center">
                       <p className="text-white text-4xl">{user.name[0].toUpperCase()}</p>

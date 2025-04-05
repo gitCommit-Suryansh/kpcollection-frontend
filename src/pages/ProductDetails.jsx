@@ -132,9 +132,7 @@ const ProductDetails = () => {
                 {productDets.images.map((image, index) => (
                   <img
                     key={index}
-                    src={`data:image/jpg;base64,${Buffer.from(
-                      image.data
-                    ).toString("base64")}`}
+                    src={image}
                     alt={`Thumbnail ${index + 1}`}
                     className={`w-full aspect-square object-cover cursor-pointer border
                 ${
@@ -154,9 +152,7 @@ const ProductDetails = () => {
             }`}
           >
             <img
-              src={`data:image/jpg;base64,${Buffer.from(
-                productDets.images[selectedImage].data
-              ).toString("base64")}`}
+              src={productDets.images[selectedImage]}
               alt="Main Product"
               className="w-full aspect-[3/4] object-cover"
             />
@@ -173,9 +169,7 @@ const ProductDetails = () => {
               {productDets.images.map((image, index) => (
                 <img
                   key={index}
-                  src={`data:image/jpg;base64,${Buffer.from(
-                    image.data
-                  ).toString("base64")}`}
+                  src={image}
                   alt={`Thumbnail ${index + 1}`}
                   className={`w-16 h-16 aspect-square object-cover cursor-pointer border
                 ${

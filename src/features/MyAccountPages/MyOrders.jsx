@@ -32,15 +32,7 @@ const MyOrders = () => {
     fetchOrders();
   }, [userId]);
 
-  const bufferToImage = (buffer) => {
-    if (!buffer || !buffer.data) return '';
-    try {
-      return `data:image/jpeg;base64,${Buffer.from(buffer.data).toString('base64')}`;
-    } catch (error) {
-      console.error("Error converting image:", error);
-      return '';
-    }
-  };
+ 
 
   const formatDate = (dateString) => {
     const date = new Date(dateString);
@@ -123,7 +115,7 @@ const MyOrders = () => {
                           style={{ transform: `translateX(-${index * 8}px)` }}
                         >
                           <img
-                            src={bufferToImage(product.productId.images[0])}
+                            src={product.productId.images[0]}
                             alt={product.productId.name}
                             className="w-20 h-20 rounded-lg object-cover border-2 border-white"
                             onError={(e) => {

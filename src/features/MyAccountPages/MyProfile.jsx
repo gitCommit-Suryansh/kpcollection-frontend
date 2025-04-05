@@ -134,9 +134,7 @@ const MyProfile = () => {
                       imagePreview
                         ? imagePreview
                         : profile
-                        ? `data:image/jpg;base64,${Buffer.from(
-                            profile.data
-                          ).toString("base64")}`
+                        ? profile
                         : defaultProfile
                     })`,
                     backgroundSize: "cover",

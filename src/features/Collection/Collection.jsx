@@ -166,9 +166,7 @@ const Collection = () => {
                   <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                     <img
                       className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                      src={`data:image/jpg;base64,${Buffer.from(
-                        product.images[0].data
-                      ).toString("base64")}`}
+                      src={product.images[0]}
                       alt={product.name}
                     />
                   </div>

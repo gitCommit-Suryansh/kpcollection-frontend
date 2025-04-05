@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Header from "../features/navigation/header";
 import axios from "axios";
-import { Buffer } from "buffer";
-import { Link} from "react-router-dom";
+import { Link } from "react-router-dom";
 import Cookies from "js-cookie";
 import decodeToken from "../utils/decodeToken";
 import carousel1 from "../assets/images/carousel1.png";
@@ -82,17 +81,17 @@ const Shop = () => {
   if (loading)
     return (
       <div className="min-h-screen flex items-center justify-center flex-col gap-3">
-      <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-zinc-500"></div>
-      <div className="animate-pulse text-zinc-500 pl-3">Loading...</div>
-    </div>
-    );
-
-  if (error)
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center text-red-600">
-        Error: {error}
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-zinc-500"></div>
+        <div className="animate-pulse text-zinc-500 pl-3">Loading...</div>
       </div>
     );
+
+  // if (error)
+  //   return (
+  //     <div className="min-h-screen bg-white flex items-center justify-center text-red-600">
+  //       Error: {error}
+  //     </div>
+  //   );
 
   return (
     <div className="min-h-screen bg-white">
@@ -100,6 +99,19 @@ const Shop = () => {
 
       {/* Carousel Component */}
       <div className="relative w-full h-64 sm:h-screen overflow-hidden mt-16">
+        <div className="absolute inset-0 bg-black/40 z-10 flex items-center justify-center">
+          <div className="text-center text-white px-4">
+            <h1 className="text-4xl sm:text-3xl md:text-7xl font-bold mb-6 tracking-tight">
+              ELEGANT ESSENTIALS
+            </h1>
+            <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light tracking-wide">
+              Timeless pieces for the modern wardrobe
+            </p>
+            <button className="px-8 py-3 bg-white text-black font-medium text-sm tracking-widest hover:bg-black hover:text-white transition-all duration-300 shadow-xl">
+              EXPLORE COLLECTION
+            </button>
+          </div>
+        </div>
         <img
           src={images[currentImageIndex]}
           alt="Carousel"
@@ -127,9 +139,7 @@ const Shop = () => {
                 <div className="aspect-[3/4] overflow-hidden bg-gray-100 ">
                   <img
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                    src={`data:image/jpg;base64,${Buffer.from(
-                      product.images[0].data
-                    ).toString("base64")}`}
+                    src={product.images[0]}
                     alt={product.name}
                   />
                 </div>
@@ -186,9 +196,7 @@ const Shop = () => {
                 <div className="aspect-[3/4] overflow-hidden bg-gray-100">
                   <img
                     className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                    src={`data:image/jpg;base64,${Buffer.from(
-                      product.images[0].data
-                    ).toString("base64")}`}
+                    src={product.images[0]}
                     alt={product.name}
                   />
                 </div>

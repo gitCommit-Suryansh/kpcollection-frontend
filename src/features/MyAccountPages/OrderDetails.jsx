@@ -39,51 +39,60 @@ const OrderDetails = () => {
 
   const renderPaymentDetails = (paymentDetails) => {
     const { data, code } = paymentDetails;
-    const { paymentInstrument } = data;
+    const paymentInstrument = data?.paymentInstrument || null;
 
     const commonDetails = [
       {
         label: "Transaction ID",
-        value: data.transactionId
-      },
-      {
-        label: "Payment Mode",
-        value: paymentInstrument.type
+        value: data.transactionId || "N/A"
       },
       {
         label: "Payment Stage",
-        value: data.state
+        value: data.state || "N/A"
       },
       {
         label: "Payment Status",
-        value: code
-      }
+        value: code || "N/A"
+      },
+      // Only include Payment Mode if paymentInstrument exists
+      ...(paymentInstrument ? [{
+        label: "Payment Mode",
+        value: paymentInstrument.type || "N/A"
+      }] : [])
     ];
 
-    const cardSpecificDetails = paymentInstrument.type === "CARD" ? [
+    // Only create card-specific details if paymentInstrument exists and type is CARD
+    const cardSpecificDetails = (paymentInstrument && paymentInstrument.type === "CARD") ? [
       {
         label: "Card Type",
-        value: paymentInstrument.cardType
+        value: paymentInstrument.cardType || "N/A"
       },
       {
         label: "BRN",
-        value: paymentInstrument.brn
+        value: paymentInstrument.brn || "N/A"
       }
     ] : [];
 
-    const upiSpecificDetails = paymentInstrument.type === "UPI" ? [
+    // Only create UPI-specific details if paymentInstrument exists and type is UPI
+    const upiSpecificDetails = (paymentInstrument && paymentInstrument.type === "UPI") ? [
       {
         label: "UTR",
-        value: paymentInstrument.utr
+        value: paymentInstrument.utr || "N/A"
       },
       {
         label: "Account Holder",
-        value: paymentInstrument.accountHolderName
+        value: paymentInstrument.accountHolderName || "N/A"
       }
     ] : [];
 
-    const allDetails = [...commonDetails, ...(paymentInstrument.type === "CARD" ? cardSpecificDetails : upiSpecificDetails)];
-
+    // Combine all details with safe fallbacks
+    const allDetails = [
+      ...commonDetails,
+      ...(paymentInstrument ? 
+          (paymentInstrument.type === "CARD" ? cardSpecificDetails : upiSpecificDetails)
+          : []
+      )
+    ];
     return (
       <div className="grid grid-cols-1 md:grid-cols-2 gap-2">
         {allDetails.map((detail, index) => (
@@ -180,7 +189,7 @@ const OrderDetails = () => {
                     {productDetails.map((product, index) => (
                       <div key={index} className="flex gap-4 p-4 bg-gray-50 rounded-lg">
                         <img
-                          src={bufferToImage(product.productId.images[0])}
+                          src={product.productId.images[0]}
                           alt={product.productId.name}
                           className="w-20 h-20 object-cover rounded-md"
                         />

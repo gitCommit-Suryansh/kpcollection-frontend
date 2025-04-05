@@ -56,7 +56,7 @@ const Wishlist = () => {
                     <div className="w-32 aspect-[3/4]">
                       <Link to={`/product/${item._id}`}>
                         <img
-                          src={`data:image/jpg;base64,${Buffer.from(item.images[0].data).toString("base64")}`}
+                          src={item.images[0]}
                           alt={item.name}
                           className="w-full h-full object-cover"
                         />
