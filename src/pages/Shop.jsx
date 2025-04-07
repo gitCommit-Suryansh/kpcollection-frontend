@@ -86,12 +86,12 @@ const Shop = () => {
       </div>
     );
 
-  // if (error)
-  //   return (
-  //     <div className="min-h-screen bg-white flex items-center justify-center text-red-600">
-  //       Error: {error}
-  //     </div>
-  //   );
+  if (error)
+    return (
+      <div className="min-h-screen bg-white flex items-center justify-center text-red-600">
+        Error: {error}
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-white">
@@ -271,7 +271,7 @@ const Shop = () => {
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Size Guide</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Terms of Service</a></li>
+                <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
 

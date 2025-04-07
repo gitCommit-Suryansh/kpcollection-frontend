@@ -10,15 +10,7 @@ const OrderDetails = () => {
   const [error, setError] = useState(null);
   const [activeSummaryTab, setActiveSummaryTab] = useState('products');
 
-  const bufferToImage = (buffer) => {
-    if (!buffer || !buffer.data) return "";
-    try {
-      return `data:image/jpeg;base64,${Buffer.from(buffer.data).toString("base64")}`;
-    } catch (error) {
-      console.error("Error converting image:", error);
-      return "";
-    }
-  };
+
 
   useEffect(() => {
     const fetchOrderDetails = async () => {
@@ -199,7 +191,7 @@ const OrderDetails = () => {
                           <div className="mt-2 flex flex-wrap gap-4">
                             <span className="text-sm text-gray-600">Size: {product.size}</span>
                             <span className="text-sm text-gray-600">Qty: {product.quantity}</span>
-                            <span className="text-sm font-medium text-gray-800">₹{product.productId.price}</span>
+                            <span className="text-sm font-medium text-gray-800">₹{product.productId.price-product.productId.discount}</span>
                           </div>
                         </div>
                       </div>
