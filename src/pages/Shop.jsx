@@ -163,11 +163,11 @@ const Shop = () => {
           ))}
         </div>
 
-        <div className="text-center mt-12">
+{/*         <div className="text-center mt-12">
           <button className="border border-black px-8 py-2 text-sm hover:bg-black hover:text-white transition-colors duration-300">
             VIEW ALL
           </button>
-        </div>
+        </div> */}
       </main>
 
       <div className="flex justify-center mt-8 mb-8">
