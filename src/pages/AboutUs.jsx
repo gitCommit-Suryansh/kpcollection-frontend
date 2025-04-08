@@ -30,7 +30,7 @@ const location = useLocation();
            At KP Collection, we believe that fashion is not just about clothing, but a way to express yourself. Our carefully curated collection is designed to cater to all your fashion needs, whether you're looking for something casual, formal, or anything in between.
          </p>
          
-         <h2 className="text-2xl font-bold mt-8 mb-4">Terms and Conditions</h2>
+         <h2 className="text-2xl font-bold mt-8 mb-4" id="terms-and-condition">Terms and Conditions</h2>
          <p className="text-lg mb-4">
            Welcome to KP Collection! By accessing or using our website (https://kpcollection.store/), you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully before using our services. If you do not agree to these terms, please do not use our website.
          </p>
@@ -213,7 +213,7 @@ const location = useLocation();
            </li>
          </ol>
  
-         <h2 className="text-2xl font-bold mt-8 mb-4">Return and Refund Policy</h2>
+         <h2 className="text-2xl font-bold mt-8 mb-4" id="return-and-refund-policy">Return and Refund Policy</h2>
  {/*         <p className="text-lg mb-4"> */}
  {/*           At KP Collection, customer satisfaction is our priority. If you are not completely satisfied with your purchase, we’re here to help with our straightforward return and refund policy.
          </p> */}
@@ -284,7 +284,7 @@ const location = useLocation();
              <strong>Shipping</strong>
              <p>All Orders will be delivered within 3-5 Business days.</p>
            </li>
-           <li>
+           <li id="contact-us">
              <strong>Contact Us</strong>
              <p>For any questions or assistance regarding returns and refunds, please contact us:</p>
              <p>Email: Kpcollection25@gmail.com</p>
