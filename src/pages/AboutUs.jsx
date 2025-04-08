@@ -14,7 +14,7 @@ function AboutUs() {
           At KP Collection, we believe that fashion is not just about clothing, but a way to express yourself. Our carefully curated collection is designed to cater to all your fashion needs, whether you're looking for something casual, formal, or anything in between.
         </p>
         
-        <h2 className="text-2xl font-bold mt-8 mb-4" id="terms-and-condition">Terms and Conditions</h2>
+        <h2 className="text-2xl font-bold mt-8 mb-4">Terms and Conditions</h2>
         <p className="text-lg mb-4">
           Welcome to KP Collection! By accessing or using our website (https://kpcollection.store/), you agree to comply with and be bound by the following Terms and Conditions. Please read them carefully before using our services. If you do not agree to these terms, please do not use our website.
         </p>
@@ -91,7 +91,7 @@ function AboutUs() {
               <li>Any disputes arising under these terms shall be subject to the exclusive jurisdiction of the courts in India.</li>
             </ol>
           </li>
-          <li className="mb-2" id="contact-us">
+          <li className="mb-2">
             <strong>Contact Us</strong>
             <p>If you have any questions about these Terms and Conditions, please contact us:</p>
             <p>Email: Kpcollection25@gmail.com</p>
@@ -99,7 +99,7 @@ function AboutUs() {
           </li>
         </ol>
 
-        <h2 className="text-2xl font-bold mt-8 mb-4" id="privacy-policy">Privacy Policy</h2>
+        <h2 className="text-2xl font-bold mt-8 mb-4">Privacy Policy</h2>
         <p className="text-lg mb-4">
           KP Collection ("we," "our," or "us") values your privacy and is committed to protecting your personal information. This Privacy Policy outlines how we collect, use, and protect your data when you use our website (https://kpcollection.store/). By accessing or using our website, you agree to this Privacy Policy.
         </p>
@@ -197,7 +197,7 @@ function AboutUs() {
           </li>
         </ol>
 
-        <h2 className="text-2xl font-bold mt-8 mb-4" id="return-and-refund-policy">Return and Refund Policy</h2>
+        <h2 className="text-2xl font-bold mt-8 mb-4">Return and Refund Policy</h2>
         <p className="text-lg mb-4">
           At KP Collection, customer satisfaction is our priority. If you are not completely satisfied with your purchase, we’re here to help with our straightforward return and refund policy.
         </p>
