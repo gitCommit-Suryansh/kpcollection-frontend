@@ -258,7 +258,7 @@ const Shop = () => {
                 <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
                 <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Shipping & Returns</Link></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Size Guide</a></li>
-                <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
+                <li><Link to="/about-us#privacy-policy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
