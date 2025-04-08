@@ -250,27 +250,26 @@ const Shop = () => {
             </div>
 
             {/* Quick Links */}
-            <div>
+            {/*<div>
               <h3 className="text-lg font-bold mb-4">Shop</h3>
               <ul className="space-y-2">
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">New Arrivals</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Best Sellers</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Men's Collection</a></li>
-                {/* <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Women's Collection</a></li> */}
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Sale</a></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Lookbook</a></li>
               </ul>
-            </div>
+            </div>*/}
 
             {/* Customer Service */}
             <div>
               <h3 className="text-lg font-bold mb-4">Customer Service</h3>
               <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Contact Us</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Shipping & Returns</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">FAQ</a></li>
+                <li><Link to="/about-us#contact-us" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
+                <li><Link to="/about-us#return-and-refund-policy" className="text-gray-400 hover:text-white transition-colors">Shipping & Returns</Link></li>
+                {/*<li><a href="#" className="text-gray-400 hover:text-white transition-colors">FAQ</a></li>*/}
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Size Guide</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</a></li>
+                <li><Link to="/about-us#privacy-policy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
                 <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
