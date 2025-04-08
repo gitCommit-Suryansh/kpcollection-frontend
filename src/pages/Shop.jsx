@@ -249,17 +249,7 @@ const Shop = () => {
               </div>
             </div>
 
-            {/* Quick Links */}
-            {/*<div>
-              <h3 className="text-lg font-bold mb-4">Shop</h3>
-              <ul className="space-y-2">
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">New Arrivals</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Best Sellers</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Men's Collection</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Sale</a></li>
-                <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Lookbook</a></li>
-              </ul>
-            </div>*/}
+            
 
             {/* Customer Service */}
             <div>
@@ -304,12 +294,7 @@ const Shop = () => {
                   Developed by <a href="#" className="text-white hover:underline">Suryansh sharma</a>
                 </p>
               </div>
-              {/* <div className="flex space-x-3 mt-4 md:mt-0">
-                <img src="https://via.placeholder.com/38x24" alt="Visa" className="h-6" />
-                <img src="https://via.placeholder.com/38x24" alt="Mastercard" className="h-6" />
-                <img src="https://via.placeholder.com/38x24" alt="Amex" className="h-6" />
-                <img src="https://via.placeholder.com/38x24" alt="PayPal" className="h-6" />
-              </div> */}
+             
             </div>
           </div>
         </div>
