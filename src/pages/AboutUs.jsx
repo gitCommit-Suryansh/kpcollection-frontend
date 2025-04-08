@@ -293,6 +293,7 @@ const location = useLocation();
          </ol>
  
          <p className="text-lg mt-8">Thank you for choosing KP Collection!</p>
+         <p className="text-lg mt-8 font-bold">This website is managed by SATYAM SHARMA</p>
        </div>
       
     </div>
