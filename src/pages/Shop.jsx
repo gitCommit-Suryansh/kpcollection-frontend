@@ -255,11 +255,11 @@ const Shop = () => {
             <div>
               <h3 className="text-lg font-bold mb-4">Customer Service</h3>
               <ul className="space-y-2">
-                <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
-                <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Shipping & Returns</Link></li>
+                <li><Link to="/about-us#contact-us" className="text-gray-400 hover:text-white transition-colors">Contact Us</Link></li>
+                <li><Link to="/about-us#return-and-refund-policy" className="text-gray-400 hover:text-white transition-colors">Shipping & Returns</Link></li>
                 <li><a href="#" className="text-gray-400 hover:text-white transition-colors">Size Guide</a></li>
                 <li><Link to="/about-us#privacy-policy" className="text-gray-400 hover:text-white transition-colors">Privacy Policy</Link></li>
-                <li><Link to="/about-us" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link></li>
+                <li><Link to="/about-us#terms-and-condition" className="text-gray-400 hover:text-white transition-colors">Terms of Service</Link></li>
               </ul>
             </div>
 
