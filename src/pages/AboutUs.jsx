@@ -99,7 +99,7 @@ function AboutUs() {
            </li>
          </ol>
  
-         <h2 className="text-2xl font-bold mt-8 mb-4">Privacy Policy</h2>
+         <h2 className="text-2xl font-bold mt-8 mb-4" id="privacy-policy">Privacy Policy</h2>
          <p className="text-lg mb-4">
            KP Collection ("we," "our," or "us") values your privacy and is committed to protecting your personal information. This Privacy Policy outlines how we collect, use, and protect your data when you use our website (https://kpcollection.store/). By accessing or using our website, you agree to this Privacy Policy.
          </p>
