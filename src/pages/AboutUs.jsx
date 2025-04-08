@@ -198,9 +198,9 @@ function AboutUs() {
         </ol>
 
         <h2 className="text-2xl font-bold mt-8 mb-4">Return and Refund Policy</h2>
-        <p className="text-lg mb-4">
-          At KP Collection, customer satisfaction is our priority. If you are not completely satisfied with your purchase, we’re here to help with our straightforward return and refund policy.
-        </p>
+{/*         <p className="text-lg mb-4"> */}
+{/*           At KP Collection, customer satisfaction is our priority. If you are not completely satisfied with your purchase, we’re here to help with our straightforward return and refund policy.
+        </p> */}
         <ol className="list-decimal list-inside text-lg mb-4">
           <li>
             <strong>Return Policy</strong>
