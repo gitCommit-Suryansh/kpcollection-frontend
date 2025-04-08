@@ -1,7 +1,23 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Header from '../features/navigation/header';
+import { useLocation } from 'react-router-dom';
+
 
 function AboutUs() {
+const location = useLocation();
+
+  useEffect(() => {
+    if (location.hash) {
+      const element = document.querySelector(location.hash);
+      if (element) {
+        // Give it a short timeout to ensure the DOM is fully loaded
+        setTimeout(() => {
+          element.scrollIntoView({ behavior: 'smooth' });
+        }, 100);
+      }
+    }
+  }, [location]);
+
   return (
     <div className="min-h-screen bg-white">
       <Header />
