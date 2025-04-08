@@ -34,7 +34,7 @@ const Header = () => {
             </div>
             
             <div className="hidden lg:flex items-center space-x-8 flex-1 justify-center">
-              <Link to="/" className="text-sm hover:text-gray-600">HOME</Link>
+{/*               <Link to="/" className="text-sm hover:text-gray-600">HOME</Link> */}
               {/* <Link to="/" className="text-sm hover:text-gray-600">CLOTHING</Link> */}
               {/*<Link to="/accessories" className="text-sm hover:text-gray-600">ACCESSORIES</Link>*/}
             </div>
