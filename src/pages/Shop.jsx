@@ -107,7 +107,7 @@ const Shop = () => {
             <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light tracking-wide">
               Timeless pieces for the modern wardrobe
             </p>
-            <button className="px-8 py-3 bg-white text-black font-medium text-sm tracking-widest hover:bg-black hover:text-white transition-all duration-300 shadow-xl">
+            <button href="#collections" className="px-8 py-3 bg-white text-black font-medium text-sm tracking-widest hover:bg-black hover:text-white transition-all duration-300 shadow-xl">
               EXPLORE COLLECTION
             </button>
           </div>
@@ -126,7 +126,7 @@ const Shop = () => {
       </div>
 
       {/* Main Content */}
-      <main className="max-w-[1440px] mx-auto px-4 mt-2">
+      <main className="max-w-[1440px] mx-auto px-4 mt-2" id="collections">
         <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
           {products.map((product, index) => (
             <div
