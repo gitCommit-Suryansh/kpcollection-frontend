@@ -107,9 +107,11 @@ const Shop = () => {
             <p className="text-lg md:text-xl mb-10 max-w-2xl mx-auto font-light tracking-wide">
               Timeless pieces for the modern wardrobe
             </p>
-            <button href="#collections" className="px-8 py-3 bg-white text-black font-medium text-sm tracking-widest hover:bg-black hover:text-white transition-all duration-300 shadow-xl">
+            <a href="#collections">
+            <button className="px-8 py-3 bg-white text-black font-medium text-sm tracking-widest hover:bg-black hover:text-white transition-all duration-300 shadow-xl">
               EXPLORE COLLECTION
             </button>
+              </a>
           </div>
         </div>
         <img
