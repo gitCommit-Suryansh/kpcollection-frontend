@@ -75,7 +75,7 @@ const location = useLocation();
              <strong>Returns and Refunds</strong>
              <ol className="list-decimal list-inside ml-4">
                <li>We accept returns and exchanges as outlined in our Return Policy, available on the website.</li>
-               <li>Refunds will be processed to the original payment method within [Insert Timeframe] after approval.</li>
+               <li>Refunds will be processed to the original payment method within 5-7 after approval.</li>
                <li>Items must be returned in their original condition with tags intact. Customers are responsible for return shipping costs unless the return is due to a defect or error on our part.</li>
              </ol>
            </li>
@@ -234,8 +234,7 @@ const location = useLocation();
                  <strong>Non-Returnable Items</strong>
                  <p>The following items cannot be returned:</p>
                  <ul className="list-disc list-inside ml-4">
-                   <li>Undergarments, socks, or any personal hygiene products</li>
-                   <li>Discounted or clearance items (if marked non-returnable)</li>
+                   
                    <li>Customized or personalized items</li>
                  </ul>
                </li>
