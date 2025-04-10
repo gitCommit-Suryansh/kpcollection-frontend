@@ -58,7 +58,7 @@ const location = useLocation();
            <li className="mb-2">
              <strong>Pricing and Payments</strong>
              <ol className="list-decimal list-inside ml-4">
-               <li>All prices listed on the website are in [Insert Currency] and include applicable taxes unless stated otherwise.</li>
+               <li>All prices listed on the website are in Rupees and include applicable taxes unless stated otherwise.</li>
                <li>KP Collection reserves the right to change prices at any time without notice.</li>
                <li>Payment must be made via the payment methods specified on the website. Orders will only be processed upon successful payment confirmation.</li>
              </ol>
