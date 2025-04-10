@@ -299,11 +299,7 @@ const ProductDetails = () => {
                   </p>
                 )}
               </div>
-              <div className="border-b py-4">
-                <button className="w-full text-left font-medium">
-                  MORE INFORMATION
-                </button>
-              </div>
+              
             </div>
           </div>
         </div>
