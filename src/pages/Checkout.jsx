@@ -3,20 +3,10 @@ import Header from "../features/navigation/header";
 import Cookies from "js-cookie";
 import decodeToken from "../utils/decodeToken";
 import axios from "axios";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation, useNavigate ,useSearchParams} from "react-router-dom";
 import CryptoJS from 'crypto-js';
+import { FaExclamationTriangle } from 'react-icons/fa';
 
-const ENCRYPTION_KEY = "PhonepeEncryptionKey".padEnd(32, '0');
-
-function decrypt(text) {
-  const parts = text.split(':');
-  const iv = CryptoJS.enc.Hex.parse(parts[0]);
-  const encryptedText = CryptoJS.enc.Hex.parse(parts[1]);
-
-  const decrypted = CryptoJS.AES.decrypt({ ciphertext: encryptedText },CryptoJS.enc.Utf8.parse(ENCRYPTION_KEY),{ iv: iv });
-
-  return decrypted.toString(CryptoJS.enc.Utf8);
-}
 
 const Checkout = () => {
   const location = useLocation();
@@ -25,32 +15,46 @@ const Checkout = () => {
   const [paymentDetails, setpaymentDetails] = useState();
   const [user, setUser] = useState(null);
   const [isCreatingOrder, setIsCreatingOrder] = useState(false);
+  const [paymentStatus, setPaymentStatus] = useState(null);
+
   
   const token = Cookies.get("token");
   const decodedToken = decodeToken(token);
   const userId = decodedToken.id;
 
+  const [searchParams] = useSearchParams();
+  const merchantOrderId = searchParams.get('merchantOrderId');
+
   useEffect(() => {
-  
-    const queryParams = new URLSearchParams(location.search);
-    const paymentDetailsQuery = queryParams.get("paymentDetails");
-
     if (location.state && location.state.totalAmount) {
-          // Case: Navigated from Cart.jsx
-          setTotalAmount(location.state.totalAmount);
-    }
-
-    // Check for paymentDetails in query parameters
-    if (paymentDetailsQuery) {
-          const decryptedData = decrypt(decodeURIComponent(paymentDetailsQuery));
-          const paymentDetails = JSON.parse(decryptedData);
-          setpaymentDetails(paymentDetails);
-          setTotalAmount(paymentDetails.data.amount / 100);
+      // Case: Navigated from Cart.jsx
+      setTotalAmount(location.state.totalAmount);
     }
   }, [location.state]); // Run this effect when location.state changes
 
   useEffect(() => {
-    if (user && user.cart && paymentDetails && paymentDetails.data) {
+    if (merchantOrderId) {
+      checkPaymentStatus();
+    }
+  }, [merchantOrderId]);
+
+  const callback = (response) => {
+    switch (response) {
+      case 'USER_CANCEL':
+        // Add merchant's logic if they have any custom thing to trigger on UI after the transaction is cancelled by the user
+        break;
+      case 'CONCLUDED':
+        // Add merchant's logic if they have any custom thing to trigger on UI after the transaction is in terminal state
+        break;
+      default:
+        console.log('Unknown response received:', response);
+    }
+  };
+
+
+
+  useEffect(() => {
+    if (user && user.cart && paymentDetails) {
       if (isCreatingOrder) return;
 
       setIsCreatingOrder(true);
@@ -60,7 +64,6 @@ const Checkout = () => {
         email: decodedToken.email,
         name: decodedToken.name,
         mobileNumber: user.mobileNumber,
-        iat: decodedToken.iat,
         address: user.address,
       };
 
@@ -83,10 +86,10 @@ const Checkout = () => {
           const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/order/createorder`, orderDetails);
           console.log("Order created successfully:", response.data);
           
-          if (response.data.order.paymentDetails.code === "PAYMENT_SUCCESS") {
+          if (response.data.order.paymentDetails.code === "COMPLETED") {
             navigate("/payment/success", { state: { orderId: response.data.order._id } });
           }
-          if (response.data.order.paymentDetails.code !== "PAYMENT_SUCCESS") {
+          if (response.data.order.paymentDetails.code !== "COMPLETED") {
             navigate("/payment/failure", { state: { orderId: response.data.order._id } });
           }
           
@@ -100,9 +103,32 @@ const Checkout = () => {
       createOrder();
     }
   }, [user, paymentDetails]);
-
-
   
+
+  const checkPaymentStatus = async () => {
+    try {
+      const response = await axios.post(`${process.env.REACT_APP_BACKEND_URL}/api/phonepe/check-payment-status`, {
+        merchantOrderId: merchantOrderId
+      });
+
+      if (response.data.status.state === "COMPLETED") {
+        setPaymentStatus("success");
+        setpaymentDetails(response.data.status)
+        console.log(response.data.status)
+      } else if(response.data.status.state==='PENDING') {
+        setPaymentStatus("pending");
+        setpaymentDetails(response.data.status)
+        console.log(response.data.status)
+      } else {
+        setPaymentStatus("failed");
+        setpaymentDetails(response.data.status)
+        console.log(response.data.status)
+      }
+    } catch (error) {
+      console.error('Error checking payment status:', error);
+      setPaymentStatus("error");
+    }
+  };
 
   useEffect(() => {
     const fetchUser = async () => {
@@ -118,28 +144,43 @@ const Checkout = () => {
     fetchUser();
   }, [userId]);
 
+
   const handlePayment = async () => {
-    console.log("clicked");
+    console.log("Payment button clicked");
+    const paymentData = {
+      amount: totalAmount * 100,
+      mobileNumber: user.mobileNumber,
+      userId: user._id,
+    };
+    
+    console.log("Data being sent to backend:", paymentData);
+
     try {
       const response = await axios.post(
         `${process.env.REACT_APP_BACKEND_URL}/api/phonepe/pay`,
-        {
-          amount: totalAmount * 100,
-          mobileNumber: user.mobileNumber,
-          userId: user._id,
-        }
+        paymentData
       );
       if (response.status === 200) {
-        window.location.assign(response.data.url);
-        console.log(response.data);
+        console.log(response.data)
+        const tokenUrl=response.data.redirectUrl
+        window.PhonePeCheckout.transact({ tokenUrl });  
+        // window.PhonePeCheckout.transact({ tokenUrl, callback, type: "IFRAME" });
+
+
       } else {
         throw new Error("Failed to initiate payment");
       }
     } catch (error) {
       console.error("Error creating order:", error);
+      console.error("Error details:", {
+        message: error.message,
+        response: error.response?.data,
+        status: error.response?.status
+      });
       alert("Failed to create order. Please try again.");
     }
   };
+
 
   return (
     <div className="min-h-screen bg-white">

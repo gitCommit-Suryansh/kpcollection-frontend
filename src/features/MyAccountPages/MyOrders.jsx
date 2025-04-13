@@ -57,7 +57,7 @@ const MyOrders = () => {
       <Header />
       <main className="max-w-5xl mx-auto px-4 py-12 mt-12">
         <div className="flex justify-between items-center mb-12">
-          <h1 className="text-4xl font-light">Orders</h1>
+          <h1 className="text-4xl text-gray-600 font-semibold">My Orders</h1>
           <Link 
             to="/"
             className="text-blue-600 hover:text-blue-800 transition flex items-center gap-2"
@@ -89,7 +89,7 @@ const MyOrders = () => {
                 <div className="border border-gray-100 rounded-lg p-6 hover:shadow-lg transition duration-300">
                   <div className="flex justify-between items-start mb-6">
                     <div>
-                      <p className="text-sm text-gray-500 mb-1">Order ID: {order._id}</p>
+                      <p className="text-m text-gray-500 mb-1 font-bold">Order ID: {order._id}</p>
                       <div className="flex items-center gap-2 text-sm text-gray-500">
                         <Calendar className="w-4 h-4" />
                         <span>{formatDate(order.createdAt)}</span>
@@ -97,9 +97,11 @@ const MyOrders = () => {
                     </div>
                     <div
                       className={`px-4 py-1.5 rounded-full text-sm ${
-                        order.paymentDetails.message==="Your payment is successful."
+                        order.paymentDetails.message === "payment was successful"
                           ? 'bg-emerald-50 text-emerald-700'
-                          : 'bg-red-50 text-red-700'
+                          : order.paymentDetails.message === "payment is in pending state"
+                            ? 'bg-yellow-50 text-yellow-700'
+                            : 'bg-red-50 text-red-700'
                       }`}
                     >
                       {order.paymentDetails.message}

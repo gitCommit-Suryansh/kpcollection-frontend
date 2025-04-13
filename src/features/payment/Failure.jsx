@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link, useLocation} from 'react-router-dom';
-import { CheckCircle, ShoppingBag } from 'lucide-react';
+import { XCircle,CheckCircle, ShoppingBag } from 'lucide-react';
 
 
 const Failure = () => {
@@ -15,7 +15,7 @@ const Failure = () => {
                     {/* Success Icon */}
                     <div className="relative">
                         <div className="absolute -inset-1 bg-green-100 rounded-full animate-pulse"></div>
-                        <CheckCircle className="h-16 w-16 text-green-500 relative" />
+                        <XCircle className="h-16 w-16 text-red-500 relative" />
                     </div>
 
                     {/* Success Message */}
