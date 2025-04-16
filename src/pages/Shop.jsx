@@ -41,6 +41,7 @@ const Shop = () => {
 
     fetchProducts();
   }, []);
+  console.log(products)
 
   useEffect(() => {
     const interval = setInterval(() => {
@@ -65,6 +66,7 @@ const Shop = () => {
       setError("Failed to fetch products. Please try again.");
     }
   };
+  console.log(fetchedProducts)
 
   const token = Cookies.get("token");
   let userId;
@@ -86,12 +88,7 @@ const Shop = () => {
       </div>
     );
 
-  if (error)
-    return (
-      <div className="min-h-screen bg-white flex items-center justify-center text-red-600">
-        Error: {error}
-      </div>
-    );
+ 
 
   return (
     <div className="min-h-screen bg-white">
@@ -129,47 +126,48 @@ const Shop = () => {
 
       {/* Main Content */}
       <main className="max-w-[1440px] mx-auto px-4 mt-2" id="collections">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-          {products.map((product, index) => (
-            <div
-              key={product._id}
-              className={`group z-2 ${
-                window.innerWidth > 1024 ? "scale-[90%]" : ""
-              }`}
-            >
-              <Link to={`/product/${product._id}`} className="block relative ">
-                <div className="aspect-[3/4] overflow-hidden bg-gray-100 ">
-                  <img
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                    src={product.images[0]}
-                    alt={product.name}
-                  />
-                </div>
-              </Link>
-              <div className="mt-4 text-center">
-                <Link to={`/product/${product._id}`}>
-                  <h3 className="text-sm font-medium text-gray-900 mb-1">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm text-gray-900">INR {product.price}</p>
+        {error || products.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <h2 className="text-2xl font-medium mb-2 text-gray-600">No Products Available</h2>
+            <p className="text-gray-500">There are currently no products to display.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {products.map((product, index) => (
+              <div
+                key={product._id}
+                className={`group z-2 ${
+                  window.innerWidth > 1024 ? "scale-[90%]" : ""
+                }`}
+              >
+                <Link to={`/product/${product._id}`} className="block relative ">
+                  <div className="aspect-[3/4] overflow-hidden bg-gray-100 ">
+                    <img
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                      src={product.images[0]}
+                      alt={product.name}
+                    />
+                  </div>
                 </Link>
-                <div className="mt-2 flex justify-center space-x-2 border-t-2 border-b-2 border-gray-300">
-                  {product.sizes.map((size) => (
-                    <span key={size} className="text-xs text-gray-600">
-                      {size}
-                    </span>
-                  ))}
+                <div className="mt-4 text-center">
+                  <Link to={`/product/${product._id}`}>
+                    <h3 className="text-sm font-medium text-gray-900 mb-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-gray-900">INR {product.price}</p>
+                  </Link>
+                  <div className="mt-2 flex justify-center space-x-2 border-t-2 border-b-2 border-gray-300">
+                    {product.sizes.map((size) => (
+                      <span key={size} className="text-xs text-gray-600">
+                        {size}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
-
-{/*         <div className="text-center mt-12">
-          <button className="border border-black px-8 py-2 text-sm hover:bg-black hover:text-white transition-colors duration-300">
-            VIEW ALL
-          </button>
-        </div> */}
+            ))}
+          </div>
+        )}
       </main>
 
       <div className="flex justify-center mt-8 mb-8">
@@ -186,41 +184,48 @@ const Shop = () => {
 
       {/* Display Fetched Products */}
       <div className="max-w-[1440px] mx-auto px-4">
-        <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
-          {fetchedProducts.map((product, index) => (
-            <div
-              key={index}
-              className={`group z-2 ${
-                window.innerWidth > 1024 ? "scale-[90%]" : ""
-              }`}
-            >
-              <Link to={`/product/${product._id}`} className="block relative">
-                <div className="aspect-[3/4] overflow-hidden bg-gray-100">
-                  <img
-                    className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
-                    src={product.images[0]}
-                    alt={product.name}
-                  />
-                </div>
-              </Link>
-              <div className="text-center mt-2">
-                <Link to={`/product/${product._id}`}>
-                  <h3 className="text-sm font-medium text-gray-900 mb-1">
-                    {product.name}
-                  </h3>
-                  <p className="text-sm text-gray-900">INR {product.price}</p>
+        {error || fetchedProducts.length === 0 ? (
+          <div className="flex flex-col items-center justify-center py-20">
+            <h2 className="text-2xl font-medium mb-2 text-gray-600">No Products Available</h2>
+            <p className="text-gray-500">There are currently no products in this category.</p>
+          </div>
+        ) : (
+          <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-x-6 gap-y-10">
+            {fetchedProducts.map((product, index) => (
+              <div
+                key={index}
+                className={`group z-2 ${
+                  window.innerWidth > 1024 ? "scale-[90%]" : ""
+                }`}
+              >
+                <Link to={`/product/${product._id}`} className="block relative">
+                  <div className="aspect-[3/4] overflow-hidden bg-gray-100">
+                    <img
+                      className="w-full h-full object-cover object-top group-hover:scale-105 transition-transform duration-300"
+                      src={product.images[0]}
+                      alt={product.name}
+                    />
+                  </div>
                 </Link>
-                <div className="mt-2 flex justify-center space-x-2 border-t-2 border-b-2 border-gray-300 pt-2 pb-2">
-                  {product.sizes.map((size) => (
-                    <span key={size} className="text-xs text-gray-600">
-                      {size}
-                    </span>
-                  ))}
+                <div className="text-center mt-2">
+                  <Link to={`/product/${product._id}`}>
+                    <h3 className="text-sm font-medium text-gray-900 mb-1">
+                      {product.name}
+                    </h3>
+                    <p className="text-sm text-gray-900">INR {product.price}</p>
+                  </Link>
+                  <div className="mt-2 flex justify-center space-x-2 border-t-2 border-b-2 border-gray-300 pt-2 pb-2">
+                    {product.sizes.map((size) => (
+                      <span key={size} className="text-xs text-gray-600">
+                        {size}
+                      </span>
+                    ))}
+                  </div>
                 </div>
               </div>
-            </div>
-          ))}
-        </div>
+            ))}
+          </div>
+        )}
       </div>
 
       {/* Footer */}

@@ -33,6 +33,8 @@ const OrdersDashboard = () => {
     fetchOrders();
   }, []);
 
+  console.log(orders)
+
   const formatDate = (dateString) => {
     return new Date(dateString).toLocaleString();
   };
@@ -72,10 +74,12 @@ const OrdersDashboard = () => {
 
   const getPaymentColor = (paymentcode) => {
     switch (paymentcode.toLowerCase()) {
-      case "payment_success":
+      case "completed":
         return `bg-green-600`;
-      case "payment_pending":
+      case "pending":
         return "bg-yellow-600";
+      case "failed":
+        return "bg-red-600";
       default:
         return "bg-red-600";
     }
@@ -376,7 +380,7 @@ const OrdersDashboard = () => {
                                     Transaction ID:
                                   </span>
                                   <span className="font-medium">
-                                    {order.paymentDetails.data.transactionId}
+                                    {order.paymentDetails.data.paymentDetails[0].transactionId}
                                   </span>
                                 </p>
                                 <p className="flex justify-between">
@@ -393,22 +397,11 @@ const OrdersDashboard = () => {
                                   </span>
                                   <span className="font-medium">
                                     {
-                                      order.paymentDetails.data
-                                        .paymentInstrument.type
+                                      order.paymentDetails.data.paymentDetails[0].paymentMode
                                     }
                                   </span>
                                 </p>
-                                <p className="flex justify-between">
-                                  <span className="text-gray-600">
-                                    Card Type:
-                                  </span>
-                                  <span className="font-medium">
-                                    {
-                                      order.paymentDetails.data
-                                        .paymentInstrument.cardType
-                                    }
-                                  </span>
-                                </p>
+                                
                               </div>
                             </div>
                           </div>

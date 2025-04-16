@@ -77,18 +77,12 @@ const OrderDetails = () => {
     // Only create UPI-specific details if paymentInstrument exists and type is UPI
     const upiSpecificDetails =
       paymentInstrument &&
-      ["UPI_COLLECT", "UPI_QR"].includes(paymentInstrument.paymentMode)
+      ["UPI_COLLECT", "UPI_QR","UPI_INTENT"].includes(paymentInstrument.paymentMode)
         ? [
             {
               label: "UTR",
               value: paymentInstrument.splitInstruments[0].rail.utr || "N/A",
-            },
-            {
-              label: "Account Holder",
-              value:
-                paymentInstrument.splitInstruments[0].instrument
-                  .accountHolderName || "N/A",
-            },
+            }
           ]
         : [];
 
