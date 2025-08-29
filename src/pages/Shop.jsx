@@ -234,7 +234,7 @@ const Shop = () => {
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
             {/* Logo and About */}
             <div>
-              <h3 className="text-lg font-bold mb-4">KP COLLECTION</h3>
+              <h3 className="text-lg font-bold mb-4">SIGNATURE</h3>
               <p className="text-gray-400 text-sm mb-4">Premium clothing for the modern individual. Quality fabrics, timeless designs, exceptional comfort.</p>
               <div className="flex space-x-4">
                 <a href="#" className="text-gray-400 hover:text-white transition-colors">

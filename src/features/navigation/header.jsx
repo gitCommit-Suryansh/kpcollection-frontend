@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import logo from '../../assets/images/favicon.png'
+// import logo from '../../assets/images/favicon.png'
+import logo from '../../assets/images/signatureLogoFinal.png'
 import Cookies from "js-cookie";
 import decodeToken from "../../utils/decodeToken";
 import { Link } from 'react-router-dom';
@@ -20,26 +21,23 @@ const Header = () => {
     <>
   
       <header className="fixed top-0 w-full border-b border-gray-200 z-50 bg-white">
-        <div className=" mx-auto px-5 py-4">
-          <div className="flex items-center justify-between">
+        <div className=" mx-auto px-5 py-5">
+          <div className="flex items-center justify-between relative"> {/* Added 'relative' to allow absolute positioning of the logo */}
+            {/* Leftmost position: Hamburger icon */}
             <button className="pr-[10px]" onClick={toggleMenu}>
               <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
               </svg>
             </button>
             
-            <div className="text-center flex-1 lg:flex-none justify-center items-center flex">
-              <img src={logo} alt="KP Collection Logo" className="h-8 inline-block" />
-              <Link to="/" className={`${window.innerWidth>=1024?"text-2xl":''} font-bold`}>KP-COLLECTION</Link>
+            {/* Centermost position: Signature (logo) */}
+            {/* Using absolute positioning to ensure it's truly centered regardless of side content width */}
+            <div className="absolute left-1/2 transform -translate-x-1/2">
+              <img src={logo} alt="KP Collection Logo" className="h-16 inline-block" />
             </div>
             
-            <div className="hidden lg:flex items-center space-x-8 flex-1 justify-center">
-{/*               <Link to="/" className="text-sm hover:text-gray-600">HOME</Link> */}
-              {/* <Link to="/" className="text-sm hover:text-gray-600">CLOTHING</Link> */}
-              {/*<Link to="/accessories" className="text-sm hover:text-gray-600">ACCESSORIES</Link>*/}
-            </div>
-            
-            <div className="flex items-center space-x-4">
+            {/* Rightmost position: Decoded icons based on rendering logic (hidden on mobile) */}
+            <div className="hidden md:flex items-center space-x-4">
               {decodedToken ? (
                 <>
                   <Link to="/myaccount"><User className="w-5 h-5" /></Link>
@@ -59,7 +57,7 @@ const Header = () => {
       {menuOpen && (
         <div className="fixed inset-0 bg-gray-800 bg-opacity-50 z-40" onClick={toggleMenu}>
           
-          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 p-4 mt-16">
+          <div className="fixed top-0 left-0 w-64 h-full bg-white shadow-lg z-50 p-4 mt-16" onClick={(e) => e.stopPropagation()}>
             <Link to="/"><h2 className="text-lg font-semibold mb-4">HOME</h2></Link>
             {/* <h2 className="text-lg font-semibold mb-4">CLOTHING</h2> */}
             {/* <Link to="/accessories"><h2 className="text-lg font-semibold mb-4">ACCESSORIES</h2></Link>*/}
@@ -82,6 +80,23 @@ const Header = () => {
               
             </ul>
             <Link to="/about-us"><h2 className="text-lg font-semibold mb-4">ABOUT US</h2></Link>
+
+            {/* Mobile-only account/actions */}
+            <div className="md:hidden mt-6 border-t pt-4">
+              <h2 className="text-lg font-semibold mb-3">Account</h2>
+              <div className="flex flex-col gap-3 pl-2">
+                {decodedToken ? (
+                  <>
+                    <Link to="/myaccount" onClick={toggleMenu} className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><User className="w-5 h-5" /><span>My Account</span></Link>
+                    <Link to="/wishlist" onClick={toggleMenu} className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><Heart className="w-5 h-5" /><span>Wishlist</span></Link>
+                    <Link to="/cart" onClick={toggleMenu} className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><ShoppingCart className="w-5 h-5" /><span>Cart</span></Link>
+                    <Link to="/login" onClick={toggleMenu} className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><LogOut className="w-5 h-5" /><span>Logout</span></Link>
+                  </>
+                ) : (
+                  <Link to="/login" onClick={toggleMenu} className="flex items-center gap-2 text-gray-700 hover:text-gray-900"><LogIn className="w-5 h-5" /><span>Login</span></Link>
+                )}
+              </div>
+            </div>
 
             
           </div>
